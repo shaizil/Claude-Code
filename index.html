@@ -282,7 +282,15 @@ select#sortSelect{
 }
 .card:hover .tile-inner{transform:scale(1.08);}
 .tile-inner svg{width:38%;height:38%;opacity:.92;filter:drop-shadow(0 2px 6px rgba(0,0,0,0.15));}
+.tile-photo{
+  position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+  transition:transform .5s cubic-bezier(.2,.8,.2,1);
+}
+.card:hover .tile-photo{transform:scale(1.08);}
 .tile::after{content:"";position:absolute;inset:0;background:radial-gradient(circle at 30% 20%, rgba(255,255,255,0.35), transparent 55%);pointer-events:none;}
+.tile:has(.tile-photo)::after{background:linear-gradient(180deg, rgba(0,0,0,0.32) 0%, rgba(0,0,0,0) 32%, rgba(0,0,0,0) 70%, rgba(0,0,0,0.12) 100%);}
+.tile:has(.tile-photo) .badge-mini{background:rgba(255,255,255,0.92);}
+.tile:has(.tile-photo) .fav-btn{background:rgba(255,255,255,0.92);}
 .tile-cat-protein{background:var(--tile-protein);color:#fff;}
 .tile-cat-dairy{background:var(--tile-dairy);color:#6b4a12;}
 .tile-cat-drinks{background:var(--tile-drinks);color:#fff;}
@@ -450,8 +458,9 @@ footer p{max-width:520px;margin:0 auto 6px;}
 .cart-section-title{font-size:11.5px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--text-3);margin:18px 0 8px;}
 .cart-section-title:first-child{margin-top:0;}
 .cart-line{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--border);}
-.cart-line-tile{width:38px;height:38px;border-radius:10px;flex:none;display:flex;align-items:center;justify-content:center;color:#fff;}
+.cart-line-tile{width:38px;height:38px;border-radius:10px;flex:none;display:flex;align-items:center;justify-content:center;color:#fff;overflow:hidden;}
 .cart-line-tile svg{width:18px;height:18px;}
+.cart-line-tile img{width:100%;height:100%;object-fit:cover;}
 .cart-line-info{flex:1;min-width:0;}
 .cart-line-name{font-size:13px;font-weight:650;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .cart-line-meta{font-size:11.5px;color:var(--text-2);}
@@ -754,6 +763,58 @@ if (typeof window.claude !== 'undefined' && window.claude && typeof window.claud
   window.claude.use('downloads').then(function(ns){ downloadsApi = ns; }).catch(function(){});
 }
 
+/* ===================== PRODUCT PHOTOS ===================== */
+/* Representative photos (Wikimedia Commons, freely licensed) embedded as data URIs.
+   Keyed by product "concept" (many SKUs of the same food share one reference photo)
+   so the shelf-recognition value is the same without needing per-brand packaging shots. */
+var PHOTOS = {};
+var PRODUCT_PHOTO = {
+  'wat-sanben-naturale':'water-still', 'wat-levissima':'water-still',
+  'wat-sanben-frizzante':'water-sparkling', 'wat-pellegrino':'water-sparkling', 'wat-ferrarelle':'water-sparkling',
+  'drk-cokezero':'soda-can', 'drk-sanpell-zero':'soda-can', 'drk-chino':'soda-can', 'drk-estathe-zero':'soda-can',
+  'dai-hipro':'yogurt-protein', 'dai-muller':'yogurt-protein', 'dai-fage':'yogurt-protein', 'dai-granarolo-hp':'yogurt-protein', 'dai-yomo':'yogurt-protein', 'dai-vipiteno':'yogurt-protein',
+  'dai-kefir-granarolo':'kefir', 'dai-kefir-mila':'kefir',
+  'dai-fiocchi-jocca':'fiocchi-di-latte', 'dai-fiocchi-granarolo':'fiocchi-di-latte',
+  'meat-bresaola':'bresaola',
+  'meat-prosciutto-parma':'prosciutto', 'meat-prosciutto-sandaniele':'prosciutto',
+  'meat-cotto':'cooked-ham',
+  'meat-mortadella':'mortadella',
+  'fish-callipo':'canned-tuna', 'fish-riomare-naturale':'canned-tuna', 'fish-riomare-olio':'canned-tuna',
+  'fish-sgombro':'canned-mackerel', 'fish-delicius':'canned-mackerel',
+  'meat-pollo-aia':'poultry-slices', 'meat-tacchino-beretta':'poultry-slices',
+  'egg-freerange':'eggs',
+  'chz-parm24':'parmigiano-wedge', 'chz-parm36':'parmigiano-wedge', 'chz-grana':'parmigiano-wedge',
+  'chz-monteveronese':'semi-hard-cheese', 'chz-asiago':'semi-hard-cheese', 'chz-provolone':'semi-hard-cheese',
+  'chz-taleggio':'taleggio',
+  'chz-gorgonzola':'gorgonzola',
+  'chz-bufala':'mozzarella-bufala',
+  'chz-burrata':'burrata',
+  'bread-ciabatta':'crusty-bread', 'bread-rosette':'crusty-bread', 'bread-granoduro':'crusty-bread', 'bread-integrale':'crusty-bread',
+  'bread-focaccia':'focaccia',
+  'bread-piadina':'piadina',
+  'snk-taralli':'taralli',
+  'snk-crackers':'crackers',
+  'brk-oats':'oats',
+  'brk-ricecakes':'rice-cakes',
+  'frt-banana':'bananas', 'frt-uva':'grapes', 'frt-mele':'apples', 'frt-pere':'pears', 'frt-prugne':'plums',
+  'veg-datterini':'datterini-tomatoes', 'veg-cetriolo':'cucumber', 'veg-carote':'carrots', 'veg-rucola':'rucola', 'veg-insalata':'mixed-salad', 'veg-peperoni':'bell-peppers',
+  'oil-garda':'olive-oil',
+  'cond-balsamico':'balsamic-vinegar', 'cond-pantry':'lemon',
+  'pantry-pasta':'dried-pasta',
+  'snk-nuts':'mixed-nuts',
+  'choc-novi':'dark-chocolate', 'choc-perugina':'dark-chocolate', 'choc-caffarel':'dark-chocolate', 'choc-loacker':'dark-chocolate',
+  'bis-mulinobianco':'italian-biscuits', 'bis-gocciole':'italian-biscuits',
+  'cof-moka':'coffee-moka', 'cof-rtd':'coffee-drink',
+  'beer-menabrea':'beer-bottle', 'beer-ichnusa':'beer-bottle', 'beer-moretti':'beer-bottle', 'beer-messina':'beer-bottle',
+  'wine-bardolino':'red-wine', 'wine-valpsoave':'red-wine',
+  'wine-chiaretto':'rose-wine',
+  'wine-lugana':'white-wine', 'wine-custoza':'white-wine',
+  'juice-zuegg':'apple-juice',
+  'spr-fiordifrutta':'fruit-jam',
+  'spr-nocciolata':'hazelnut-spread',
+  'bar-enervit':'protein-bar'
+};
+
 /* ===================== PRODUCT DATA ===================== */
 var F = ['id','name','brand','category','sub','extra','desc','why','pack','pLow','pHigh','kcal','protein','carbs','fat','bestFor','icon','priority','recQty','alt','weightG','region'];
 
@@ -942,9 +1003,14 @@ function tileMarkup(p){
   if (p.cooler) badges += '<span class="badge-mini cooler">'+svgUse('i-snowflake')+' Cooler</span>';
   if (p.local) badges += '<span class="badge-mini local">'+svgUse('i-map')+' Local</span>';
   var isFav = !!state.favorites[p.id];
+  var photoSrc = PHOTOS[PRODUCT_PHOTO[p.id]];
+  var media = photoSrc
+    ? '<img class="tile-photo" src="'+photoSrc+'" alt="" loading="lazy" onerror="this.remove();this.parentNode.querySelector(\'.tile-inner\').hidden=false;">'
+    : '';
   return (
     '<div class="tile tile-cat-'+p.category+'">' +
-      '<div class="tile-inner"><svg class="icon"><use href="#i-'+p.icon+'"></use></svg></div>' +
+      media +
+      '<div class="tile-inner"'+(photoSrc?' hidden':'')+'><svg class="icon"><use href="#i-'+p.icon+'"></use></svg></div>' +
       '<div class="tile-badges">' +
         '<div style="display:flex;flex-direction:column;gap:6px;align-items:flex-start;">'+badges+'</div>' +
         '<button class="fav-btn'+(isFav?' is-fav':'')+'" data-fav="'+p.id+'" aria-label="'+(isFav?'Remove from favorites':'Add to favorites')+'" aria-pressed="'+isFav+'">'+svgUse('i-heart')+'</button>' +
@@ -1101,7 +1167,7 @@ function renderCart(){
         var p = e.p;
         html += (
           '<div class="cart-line">' +
-            '<div class="cart-line-tile tile-cat-'+p.category+'"><svg class="icon" style="width:18px;height:18px;"><use href="#i-'+p.icon+'"></use></svg></div>' +
+            '<div class="cart-line-tile tile-cat-'+p.category+'">'+(PHOTOS[PRODUCT_PHOTO[p.id]] ? '<img src="'+PHOTOS[PRODUCT_PHOTO[p.id]]+'" alt="">' : '<svg class="icon" style="width:18px;height:18px;"><use href="#i-'+p.icon+'"></use></svg>')+'</div>' +
             '<div class="cart-line-info"><div class="cart-line-name">'+p.name+'</div><div class="cart-line-meta">×'+e.qty+' · €'+(p.price*e.qty).toFixed(2)+'</div></div>' +
             '<div class="stepper" style="border:none;">' +
               '<button data-step="-1" data-id="'+p.id+'" aria-label="Decrease quantity">'+svgUse('i-minus')+'</button>' +
