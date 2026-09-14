@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Lake Garda Haul — Grocery Planner</title>
+<title>Lake Garda Haul</title>
 <meta name="description" content="A curated Lake Garda supermarket haul for 3 people, before the Dolomites.">
 <style>
 /* ===================== RESET & TOKENS ===================== */
@@ -748,6 +748,12 @@ function svgUse(id){ return '<svg class="icon"><use href="#'+id+'"></use></svg>'
 var CAT_ICON = { protein:'i-meat', dairy:'i-dairy', drinks:'i-droplet', bread:'i-wheat', fruitveg:'i-apple', snacks:'i-cacao', wine:'i-grape' };
 var CAT_LABEL = { protein:'Protein', dairy:'Dairy', drinks:'Drinks', bread:'Bread & Carbs', fruitveg:'Fruit & Veg', snacks:'Snacks', wine:'Wine & Beer' };
 
+/* ===================== PLATFORM CAPABILITIES ===================== */
+var downloadsApi = null;
+if (typeof window.claude !== 'undefined' && window.claude && typeof window.claude.use === 'function') {
+  window.claude.use('downloads').then(function(ns){ downloadsApi = ns; }).catch(function(){});
+}
+
 /* ===================== PRODUCT DATA ===================== */
 var F = ['id','name','brand','category','sub','extra','desc','why','pack','pLow','pHigh','kcal','protein','carbs','fat','bestFor','icon','priority','recQty','alt','weightG','region'];
 
@@ -1247,7 +1253,17 @@ function buildListText(){
 function saveJson(){
   var entries = cartEntries().map(function(e){ return {id:e.p.id, name:e.p.name, brand:e.p.brand, qty:e.qty, price:e.p.price}; });
   var data = {generated:new Date().toISOString(), items:entries, totals:computeTotals()};
-  var blob = new Blob([JSON.stringify(data,null,2)], {type:'application/json'});
+  var json = JSON.stringify(data, null, 2);
+  if (downloadsApi) {
+    downloadsApi.save({filename:'lake-garda-haul.json', data: json}).then(function(){
+      showToast('Saved as JSON');
+    }).catch(function(err){
+      if (err && err.code === 'declined') return;
+      showToast('Could not save the file here');
+    });
+    return;
+  }
+  var blob = new Blob([json], {type:'application/json'});
   var url = URL.createObjectURL(blob);
   var a = document.createElement('a'); a.href = url; a.download = 'lake-garda-haul.json';
   document.body.appendChild(a); a.click(); document.body.removeChild(a);
