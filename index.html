@@ -1,0 +1,1395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Lake Garda Haul — Grocery Planner</title>
+<meta name="description" content="A curated Lake Garda supermarket haul for 3 people, before the Dolomites.">
+<style>
+/* ===================== RESET & TOKENS ===================== */
+*,*::before,*::after{box-sizing:border-box;}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth;}
+@media (prefers-reduced-motion: reduce){
+  html{scroll-behavior:auto;}
+  *,*::before,*::after{animation-duration:0.01ms!important;animation-iteration-count:1!important;transition-duration:0.01ms!important;}
+}
+body{margin:0;}
+img,svg{display:block;}
+button{font:inherit;}
+
+:root{
+  --bg:#f5f5f7;
+  --bg-soft:#eeeef1;
+  --surface:#ffffff;
+  --surface-2:#fbfbfc;
+  --border:rgba(0,0,0,0.07);
+  --border-strong:rgba(0,0,0,0.12);
+  --text:#1d1d1f;
+  --text-2:#6e6e73;
+  --text-3:#8a8a8e;
+  --accent:#0071e3;
+  --accent-2:#0b5fc0;
+  --green:#3a7d44;
+  --red:#b33a3a;
+  --gold:#b8862b;
+  --frost:#3f8fc9;
+  --glass:rgba(255,255,255,0.72);
+  --glass-border:rgba(255,255,255,0.5);
+  --shadow-sm:0 1px 2px rgba(0,0,0,0.04),0 2px 8px rgba(0,0,0,0.04);
+  --shadow-md:0 4px 16px rgba(0,0,0,0.06),0 1px 3px rgba(0,0,0,0.05);
+  --shadow-lg:0 20px 60px rgba(0,0,0,0.10),0 4px 16px rgba(0,0,0,0.06);
+  --shadow-hover:0 24px 70px rgba(0,0,0,0.14),0 6px 20px rgba(0,0,0,0.08);
+  --radius-xl:28px;
+  --radius-lg:22px;
+  --radius-md:16px;
+  --radius-sm:11px;
+  --font: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --safe-b: env(safe-area-inset-bottom, 0px);
+  --tile-protein:linear-gradient(135deg,#ff9d76,#e85c4a);
+  --tile-dairy:linear-gradient(135deg,#fff3d6,#f3d38a);
+  --tile-drinks:linear-gradient(135deg,#9fd4ee,#3f8fc9);
+  --tile-bread:linear-gradient(135deg,#f3cf94,#cf9a55);
+  --tile-fruitveg:linear-gradient(135deg,#bdeab0,#5fae5f);
+  --tile-snacks:linear-gradient(135deg,#d6b28b,#8a5a3b);
+  --tile-wine:linear-gradient(135deg,#8a4863,#4a1e30);
+}
+:root:not([data-theme="light"]){
+  @media (prefers-color-scheme: dark){
+    --bg:#000000;
+    --bg-soft:#0a0a0c;
+    --surface:#1c1c1e;
+    --surface-2:#161618;
+    --border:rgba(255,255,255,0.09);
+    --border-strong:rgba(255,255,255,0.16);
+    --text:#f5f5f7;
+    --text-2:#a1a1a6;
+    --text-3:#8a8a8e;
+    --glass:rgba(28,28,30,0.72);
+    --glass-border:rgba(255,255,255,0.08);
+    --shadow-sm:0 1px 2px rgba(0,0,0,0.3),0 2px 8px rgba(0,0,0,0.25);
+    --shadow-md:0 4px 16px rgba(0,0,0,0.35),0 1px 3px rgba(0,0,0,0.3);
+    --shadow-lg:0 20px 60px rgba(0,0,0,0.5),0 4px 16px rgba(0,0,0,0.35);
+    --shadow-hover:0 24px 70px rgba(0,0,0,0.55),0 6px 20px rgba(0,0,0,0.4);
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#000000;
+  --bg-soft:#0a0a0c;
+  --surface:#1c1c1e;
+  --surface-2:#161618;
+  --border:rgba(255,255,255,0.09);
+  --border-strong:rgba(255,255,255,0.16);
+  --text:#f5f5f7;
+  --text-2:#a1a1a6;
+  --text-3:#8a8a8e;
+  --glass:rgba(28,28,30,0.72);
+  --glass-border:rgba(255,255,255,0.08);
+  --shadow-sm:0 1px 2px rgba(0,0,0,0.3),0 2px 8px rgba(0,0,0,0.25);
+  --shadow-md:0 4px 16px rgba(0,0,0,0.35),0 1px 3px rgba(0,0,0,0.3);
+  --shadow-lg:0 20px 60px rgba(0,0,0,0.5),0 4px 16px rgba(0,0,0,0.35);
+  --shadow-hover:0 24px 70px rgba(0,0,0,0.55),0 6px 20px rgba(0,0,0,0.4);
+}
+
+body{
+  font-family:var(--font);
+  background:var(--bg);
+  color:var(--text);
+  -webkit-font-smoothing:antialiased;
+  line-height:1.45;
+}
+a{color:inherit;}
+.icon{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;flex:none;}
+.icon.filled{fill:currentColor;}
+.visually-hidden{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;}
+.wrap{max-width:1240px;margin:0 auto;padding-inline:20px;}
+@media(min-width:900px){.wrap{padding-inline:40px;}}
+
+/* ===================== TOPBAR ===================== */
+.topbar{
+  position:sticky;top:0;z-index:60;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:14px 20px;
+  background:var(--glass);
+  backdrop-filter:blur(20px) saturate(1.6);
+  -webkit-backdrop-filter:blur(20px) saturate(1.6);
+  border-bottom:1px solid var(--border);
+}
+.brand{display:flex;align-items:center;gap:9px;font-weight:650;font-size:15px;letter-spacing:-0.01em;}
+.brand .flag{width:20px;height:14px;border-radius:3px;overflow:hidden;display:flex;box-shadow:0 0 0 1px var(--border);}
+.brand .flag span{flex:1;}
+.brand .flag span:nth-child(1){background:#2e7d32;}
+.brand .flag span:nth-child(2){background:#f5f5f0;}
+.brand .flag span:nth-child(3){background:#c1272d;}
+.top-actions{display:flex;align-items:center;gap:8px;}
+.icon-btn{
+  width:38px;height:38px;border-radius:50%;border:1px solid var(--border);
+  background:var(--surface);color:var(--text);display:flex;align-items:center;justify-content:center;
+  cursor:pointer;transition:transform .2s ease, box-shadow .2s ease, background .2s ease;
+  position:relative;
+}
+.icon-btn:hover{transform:translateY(-1px);box-shadow:var(--shadow-sm);}
+.icon-btn:active{transform:scale(.94);}
+.cart-badge{
+  position:absolute;top:-4px;right:-4px;min-width:18px;height:18px;padding:0 4px;border-radius:9px;
+  background:var(--accent);color:#fff;font-size:10.5px;font-weight:700;display:flex;align-items:center;justify-content:center;
+  box-shadow:0 0 0 2px var(--surface);
+}
+.cart-badge[hidden]{display:none;}
+
+/* ===================== HERO ===================== */
+.hero{
+  position:relative;overflow:hidden;
+  padding:64px 20px 46px;
+  background:
+    radial-gradient(1100px 500px at 15% -10%, rgba(63,143,201,0.28), transparent 60%),
+    radial-gradient(900px 500px at 100% 0%, rgba(184,134,43,0.22), transparent 55%),
+    radial-gradient(800px 400px at 50% 120%, rgba(58,125,68,0.18), transparent 60%),
+    var(--bg);
+  text-align:center;
+  isolation:isolate;
+}
+.hero::before{
+  content:"";position:absolute;inset:0;z-index:-1;opacity:.5;
+  background-image:radial-gradient(circle, var(--border-strong) 1px, transparent 1px);
+  background-size:26px 26px;
+  mask-image:radial-gradient(600px 300px at 50% 0%, black, transparent 75%);
+}
+.badge-pill{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:6px 14px;border-radius:999px;font-size:12.5px;font-weight:600;letter-spacing:.02em;
+  background:var(--glass);border:1px solid var(--glass-border);backdrop-filter:blur(8px);
+  color:var(--text-2);margin-bottom:22px;
+  animation:fadeUp .7s ease both;
+}
+.hero h1{
+  font-size:clamp(34px,7vw,64px);
+  line-height:1.03;font-weight:700;letter-spacing:-0.03em;margin:0 0 6px;
+  animation:fadeUp .7s ease .05s both;
+}
+.hero h1 .accentline{
+  display:block;
+  background:linear-gradient(90deg,var(--green),var(--gold) 45%,var(--red));
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  font-size:.46em;font-weight:650;letter-spacing:-0.01em;margin-top:10px;
+}
+.hero p.sub{
+  max-width:520px;margin:16px auto 28px;color:var(--text-2);font-size:17px;
+  animation:fadeUp .7s ease .1s both;
+}
+.chips{display:flex;flex-wrap:wrap;gap:9px;justify-content:center;animation:fadeUp .7s ease .18s both;}
+.chip{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:8px 14px;border-radius:999px;font-size:13px;font-weight:600;
+  background:var(--surface);border:1px solid var(--border);box-shadow:var(--shadow-sm);color:var(--text);
+}
+.chip .icon{width:14px;height:14px;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:none;}}
+
+.hero-cta{margin-top:32px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap;animation:fadeUp .7s ease .24s both;}
+.btn{
+  border:none;cursor:pointer;border-radius:999px;font-weight:600;font-size:14.5px;
+  padding:12px 22px;display:inline-flex;align-items:center;gap:8px;
+  transition:transform .18s ease, box-shadow .18s ease, filter .18s ease;
+}
+.btn:active{transform:scale(.96);}
+.btn-primary{background:var(--accent);color:#fff;box-shadow:0 8px 24px rgba(0,113,227,0.35);}
+.btn-primary:hover{filter:brightness(1.07);box-shadow:0 10px 30px rgba(0,113,227,0.42);}
+.btn-ghost{background:var(--surface);color:var(--text);border:1px solid var(--border);}
+.btn-ghost:hover{box-shadow:var(--shadow-sm);}
+.btn-sm{padding:8px 14px;font-size:13px;border-radius:999px;}
+.btn-block{width:100%;justify-content:center;}
+.btn[disabled]{opacity:.45;cursor:not-allowed;}
+
+/* ===================== CONTROLS BAR ===================== */
+.controls{
+  position:sticky;top:65px;z-index:50;
+  background:var(--glass);backdrop-filter:blur(18px) saturate(1.6);-webkit-backdrop-filter:blur(18px) saturate(1.6);
+  border-bottom:1px solid var(--border);
+  padding:12px 0;
+}
+.controls-row{display:flex;gap:10px;align-items:center;flex-wrap:wrap;}
+.search-box{
+  position:relative;flex:1 1 220px;min-width:180px;
+}
+.search-box input{
+  width:100%;padding:10px 14px 10px 38px;border-radius:999px;border:1px solid var(--border);
+  background:var(--surface);color:var(--text);font-size:14.5px;outline:none;
+  transition:box-shadow .18s ease, border-color .18s ease;
+}
+.search-box input:focus{border-color:var(--accent);box-shadow:0 0 0 4px rgba(0,113,227,0.15);}
+.search-box .icon{position:absolute;left:13px;top:50%;transform:translateY(-50%);color:var(--text-3);}
+.search-box .clear-btn{position:absolute;right:8px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--text-3);cursor:pointer;padding:4px;display:none;}
+.search-box.has-value .clear-btn{display:flex;}
+
+select#sortSelect{
+  padding:10px 32px 10px 14px;border-radius:999px;border:1px solid var(--border);background:var(--surface);
+  color:var(--text);font-size:13.5px;font-weight:600;outline:none;cursor:pointer;
+  appearance:none;-webkit-appearance:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%238a8a8e' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 14px center;
+}
+.toggle-pill{
+  display:inline-flex;align-items:center;gap:7px;padding:8px 14px;border-radius:999px;
+  border:1px solid var(--border);background:var(--surface);font-size:13px;font-weight:600;cursor:pointer;color:var(--text-2);
+  user-select:none;
+}
+.toggle-pill input{display:none;}
+.toggle-pill .dot{width:30px;height:18px;border-radius:999px;background:var(--border-strong);position:relative;transition:background .2s;flex:none;}
+.toggle-pill .dot::after{content:"";position:absolute;top:2px;left:2px;width:14px;height:14px;border-radius:50%;background:#fff;box-shadow:var(--shadow-sm);transition:transform .2s;}
+.toggle-pill input:checked + .dot{background:var(--accent);}
+.toggle-pill input:checked + .dot::after{transform:translateX(12px);}
+.toggle-pill.active{color:var(--text);}
+
+.filter-scroll{
+  display:flex;gap:8px;overflow-x:auto;padding:12px 0 2px;scrollbar-width:none;-ms-overflow-style:none;
+}
+.filter-scroll::-webkit-scrollbar{display:none;}
+.filter-pill{
+  flex:none;padding:8px 16px;border-radius:999px;border:1px solid var(--border);background:var(--surface);
+  font-size:13.5px;font-weight:600;color:var(--text-2);cursor:pointer;white-space:nowrap;
+  transition:background .18s ease,color .18s ease, border-color .18s ease, transform .12s ease;
+}
+.filter-pill:active{transform:scale(.96);}
+.filter-pill.active{background:var(--text);color:var(--bg);border-color:var(--text);}
+.filter-count{font-size:12px;margin:8px 0 0;color:var(--text-3);}
+
+/* ===================== SECTION HEADERS ===================== */
+.section{padding:52px 0;}
+.section-head{margin-bottom:26px;}
+.section-eyebrow{
+  display:inline-block;font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);margin-bottom:8px;
+}
+.section-title{font-size:clamp(24px,3.4vw,34px);font-weight:700;letter-spacing:-0.02em;margin:0 0 8px;}
+.section-desc{color:var(--text-2);font-size:15px;max-width:620px;margin:0;}
+
+/* ===================== PRODUCT GRID ===================== */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(252px,1fr));gap:18px;}
+.card{
+  background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);
+  overflow:hidden;box-shadow:var(--shadow-sm);
+  transition:transform .28s cubic-bezier(.2,.8,.2,1), box-shadow .28s ease, border-color .28s ease;
+  display:flex;flex-direction:column;
+  opacity:0;transform:translateY(10px);animation:cardIn .5s cubic-bezier(.2,.8,.2,1) forwards;
+}
+@keyframes cardIn{to{opacity:1;transform:none;}}
+.card:hover{transform:translateY(-5px);box-shadow:var(--shadow-hover);}
+.tile{
+  position:relative;aspect-ratio:4/3;width:100%;overflow:hidden;
+}
+.tile-inner{
+  position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  transition:transform .5s cubic-bezier(.2,.8,.2,1);
+}
+.card:hover .tile-inner{transform:scale(1.08);}
+.tile-inner svg{width:38%;height:38%;opacity:.92;filter:drop-shadow(0 2px 6px rgba(0,0,0,0.15));}
+.tile::after{content:"";position:absolute;inset:0;background:radial-gradient(circle at 30% 20%, rgba(255,255,255,0.35), transparent 55%);pointer-events:none;}
+.tile-cat-protein{background:var(--tile-protein);color:#fff;}
+.tile-cat-dairy{background:var(--tile-dairy);color:#6b4a12;}
+.tile-cat-drinks{background:var(--tile-drinks);color:#fff;}
+.tile-cat-bread{background:var(--tile-bread);color:#5a3c14;}
+.tile-cat-fruitveg{background:var(--tile-fruitveg);color:#1c3d1c;}
+.tile-cat-snacks{background:var(--tile-snacks);color:#fff;}
+.tile-cat-wine{background:var(--tile-wine);color:#fff;}
+.tile-badges{position:absolute;top:10px;left:10px;right:10px;display:flex;justify-content:space-between;align-items:flex-start;gap:6px;pointer-events:none;}
+.badge-mini{
+  display:inline-flex;align-items:center;gap:4px;padding:4px 8px;border-radius:999px;font-size:10.5px;font-weight:700;
+  background:rgba(255,255,255,0.85);color:#1d1d1f;backdrop-filter:blur(4px);white-space:nowrap;
+}
+.badge-mini.cooler{background:rgba(63,143,201,0.92);color:#fff;}
+.badge-mini.local{background:rgba(58,125,68,0.92);color:#fff;}
+.badge-mini .icon{width:11px;height:11px;}
+.fav-btn{
+  pointer-events:auto;width:30px;height:30px;border-radius:50%;border:none;background:rgba(255,255,255,0.85);
+  color:#c1272d;display:flex;align-items:center;justify-content:center;cursor:pointer;flex:none;
+  transition:transform .15s ease;
+}
+.fav-btn:active{transform:scale(.85);}
+.fav-btn .icon{width:15px;height:15px;stroke:#c1272d;}
+.fav-btn.is-fav .icon{fill:#c1272d;}
+
+.card-body{padding:16px 16px 14px;display:flex;flex-direction:column;gap:8px;flex:1;}
+.card-top{display:flex;justify-content:space-between;align-items:flex-start;gap:8px;}
+.card-name{font-size:15.5px;font-weight:650;letter-spacing:-0.01em;line-height:1.25;}
+.card-brand{font-size:12.5px;color:var(--text-2);font-weight:500;}
+.card-price{font-size:13.5px;font-weight:700;white-space:nowrap;color:var(--text);}
+.card-desc{font-size:13px;color:var(--text-2);line-height:1.5;}
+.best-for{
+  display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:700;color:var(--accent);
+  background:rgba(0,113,227,0.09);padding:4px 9px;border-radius:999px;align-self:flex-start;
+}
+.macro-row{display:flex;gap:6px;flex-wrap:wrap;margin-top:2px;}
+.macro-chip{font-size:10.5px;font-weight:650;color:var(--text-2);background:var(--bg-soft);padding:3px 8px;border-radius:8px;}
+.protein-badge{
+  font-size:11px;font-weight:700;color:#fff;background:linear-gradient(135deg,var(--green),#5a9a63);
+  padding:4px 9px;border-radius:8px;align-self:flex-start;display:inline-flex;align-items:center;gap:4px;
+}
+
+.expand-toggle{
+  display:flex;align-items:center;gap:5px;font-size:12px;font-weight:650;color:var(--text-2);
+  background:none;border:none;cursor:pointer;padding:4px 0;margin-top:auto;
+}
+.expand-toggle .icon{width:13px;height:13px;transition:transform .25s ease;}
+.card.expanded .expand-toggle .icon{transform:rotate(180deg);}
+.card-detail{
+  max-height:0;overflow:hidden;transition:max-height .35s cubic-bezier(.2,.8,.2,1), opacity .3s ease, padding .3s ease;
+  opacity:0;font-size:12.5px;color:var(--text-2);
+}
+.card.expanded .card-detail{max-height:320px;opacity:1;}
+.card-detail-inner{padding-top:8px;border-top:1px solid var(--border);margin-top:2px;display:flex;flex-direction:column;gap:6px;}
+.card-detail b{color:var(--text);font-weight:650;}
+
+.card-footer{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:0 16px 16px;}
+.stepper{display:flex;align-items:center;gap:0;border:1px solid var(--border);border-radius:999px;overflow:hidden;}
+.stepper button{
+  width:30px;height:30px;border:none;background:var(--surface-2);color:var(--text);cursor:pointer;
+  display:flex;align-items:center;justify-content:center;font-size:15px;
+}
+.stepper button:active{background:var(--border);}
+.stepper .qty{width:26px;text-align:center;font-size:13.5px;font-weight:650;}
+.add-btn{
+  flex:1;background:var(--text);color:var(--bg);border:none;border-radius:999px;padding:8px 14px;
+  font-size:13px;font-weight:650;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;
+  transition:transform .15s ease, background .2s ease;
+}
+.add-btn:active{transform:scale(.95);}
+.add-btn.in-cart{background:var(--green);color:#fff;}
+
+.empty-state{text-align:center;padding:70px 20px;color:var(--text-2);}
+.empty-state .icon{width:40px;height:40px;margin:0 auto 14px;color:var(--text-3);}
+
+/* ===================== MEALS ===================== */
+.meal-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px;}
+.meal-card{
+  background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:18px;
+  box-shadow:var(--shadow-sm);display:flex;flex-direction:column;gap:10px;transition:transform .25s ease, box-shadow .25s ease;
+}
+.meal-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-md);}
+.meal-tag{align-self:flex-start;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:var(--gold);background:rgba(184,134,43,0.12);padding:4px 9px;border-radius:999px;}
+.meal-name{font-size:16px;font-weight:650;letter-spacing:-0.01em;}
+.meal-ingredients{font-size:13px;color:var(--text-2);}
+.meal-macros{display:flex;gap:14px;font-size:12px;color:var(--text-2);}
+.meal-macros b{color:var(--text);}
+
+/* ===================== COOLER / ROADTRIP ===================== */
+.panel-card{
+  background:linear-gradient(160deg, rgba(63,143,201,0.10), rgba(63,143,201,0.02));
+  border:1px solid rgba(63,143,201,0.25);border-radius:var(--radius-xl);padding:28px;
+  display:flex;flex-wrap:wrap;gap:26px;align-items:center;
+}
+.panel-icon{
+  width:64px;height:64px;border-radius:20px;background:var(--tile-drinks);display:flex;align-items:center;justify-content:center;flex:none;
+  box-shadow:var(--shadow-md);
+}
+.panel-icon svg{width:30px;height:30px;color:#fff;}
+.panel-stats{display:flex;gap:26px;flex-wrap:wrap;flex:1;}
+.stat-block .num{font-size:24px;font-weight:700;letter-spacing:-0.02em;}
+.stat-block .lbl{font-size:12px;color:var(--text-2);font-weight:600;}
+.panel-note{font-size:13px;color:var(--text-2);max-width:280px;}
+
+.road-list{display:flex;flex-direction:column;gap:10px;}
+.road-item{
+  display:flex;align-items:center;gap:14px;padding:12px 16px;background:var(--surface);
+  border:1px solid var(--border);border-radius:var(--radius-md);box-shadow:var(--shadow-sm);
+}
+.road-icon{width:38px;height:38px;border-radius:12px;display:flex;align-items:center;justify-content:center;flex:none;color:#fff;}
+.road-icon svg{width:18px;height:18px;}
+.road-name{font-weight:650;font-size:14px;flex:1;min-width:120px;}
+.road-note{font-size:12.5px;color:var(--text-2);flex:2;min-width:160px;}
+.road-stars{display:flex;gap:2px;flex:none;}
+.road-stars .icon{width:14px;height:14px;color:var(--gold);}
+.road-stars .icon.dim{color:var(--border-strong);}
+
+/* ===================== DASHBOARD ===================== */
+.dash-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:16px;margin-bottom:30px;}
+.dash-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:18px;box-shadow:var(--shadow-sm);}
+.dash-card .num{font-size:26px;font-weight:700;letter-spacing:-0.02em;}
+.dash-card .lbl{font-size:12px;color:var(--text-2);font-weight:600;margin-top:2px;}
+.rings{display:flex;gap:30px;flex-wrap:wrap;justify-content:center;padding:10px 0 6px;}
+.ring-block{display:flex;flex-direction:column;align-items:center;gap:8px;}
+.ring{position:relative;width:120px;height:120px;}
+.ring svg{transform:rotate(-90deg);width:120px;height:120px;}
+.ring circle{fill:none;stroke-width:10;}
+.ring .track{stroke:var(--border);}
+.ring .prog{stroke-linecap:round;transition:stroke-dashoffset 1s cubic-bezier(.2,.8,.2,1);}
+.ring-val{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;}
+.ring-val .n{font-size:17px;font-weight:700;}
+.ring-val .u{font-size:10px;color:var(--text-2);}
+.ring-label{font-size:12.5px;font-weight:650;color:var(--text-2);}
+
+/* ===================== FOOTER ===================== */
+footer{padding:44px 20px 120px;text-align:center;color:var(--text-3);font-size:12.5px;border-top:1px solid var(--border);margin-top:20px;}
+footer p{max-width:520px;margin:0 auto 6px;}
+
+/* ===================== CART PANEL (desktop side) ===================== */
+.cart-fab{
+  position:fixed;right:20px;bottom:calc(20px + var(--safe-b));z-index:80;
+  width:58px;height:58px;border-radius:50%;background:var(--text);color:var(--bg);border:none;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;box-shadow:var(--shadow-lg);
+  transition:transform .2s ease;
+}
+.cart-fab:active{transform:scale(.92);}
+.cart-fab .icon{width:23px;height:23px;}
+.cart-fab .cart-badge{background:var(--red);}
+
+.cart-overlay{
+  position:fixed;inset:0;background:rgba(0,0,0,0.35);backdrop-filter:blur(2px);z-index:90;
+  opacity:0;pointer-events:none;transition:opacity .3s ease;
+}
+.cart-overlay.open{opacity:1;pointer-events:auto;}
+
+.cart-panel{
+  position:fixed;top:0;right:0;height:100%;width:min(420px,92vw);z-index:95;
+  background:var(--surface);box-shadow:-20px 0 60px rgba(0,0,0,0.2);
+  transform:translateX(100%);transition:transform .35s cubic-bezier(.2,.8,.2,1);
+  display:flex;flex-direction:column;
+}
+.cart-panel.open{transform:translateX(0);}
+.cart-head{display:flex;align-items:center;justify-content:space-between;padding:20px;border-bottom:1px solid var(--border);}
+.cart-head h2{font-size:18px;margin:0;font-weight:700;letter-spacing:-0.01em;}
+.cart-body{flex:1;overflow-y:auto;padding:16px 20px;}
+.cart-section-title{font-size:11.5px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--text-3);margin:18px 0 8px;}
+.cart-section-title:first-child{margin-top:0;}
+.cart-line{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--border);}
+.cart-line-tile{width:38px;height:38px;border-radius:10px;flex:none;display:flex;align-items:center;justify-content:center;color:#fff;}
+.cart-line-tile svg{width:18px;height:18px;}
+.cart-line-info{flex:1;min-width:0;}
+.cart-line-name{font-size:13px;font-weight:650;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.cart-line-meta{font-size:11.5px;color:var(--text-2);}
+.cart-line-remove{background:none;border:none;color:var(--text-3);cursor:pointer;padding:4px;}
+.cart-empty{text-align:center;padding:50px 10px;color:var(--text-2);}
+.cart-empty .icon{width:34px;height:34px;margin:0 auto 12px;color:var(--text-3);}
+
+.cart-presets{display:flex;flex-direction:column;gap:8px;padding:14px 20px 4px;border-top:1px solid var(--border);}
+.cart-totals{padding:16px 20px;border-top:1px solid var(--border);background:var(--surface-2);}
+.totals-row{display:flex;justify-content:space-between;font-size:13px;color:var(--text-2);padding:3px 0;}
+.totals-row.main{font-size:16px;font-weight:700;color:var(--text);padding-top:8px;margin-top:4px;border-top:1px dashed var(--border);}
+.cart-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:14px 20px 20px;}
+.cart-actions .btn{grid-column:span 1;}
+.cart-actions .btn.full{grid-column:1/-1;}
+
+@media(min-width:1180px){
+  .cart-fab{display:none;}
+  .cart-overlay{display:none;}
+  .cart-panel{
+    position:sticky;top:150px;right:auto;height:calc(100vh - 190px);width:340px;
+    transform:none;box-shadow:var(--shadow-md);border-radius:var(--radius-xl);border:1px solid var(--border);
+    align-self:flex-start;
+  }
+  .layout-with-cart{display:flex;gap:26px;align-items:flex-start;}
+  .layout-main{flex:1;min-width:0;}
+}
+
+/* ===================== TOAST ===================== */
+.toast{
+  position:fixed;left:50%;bottom:calc(24px + var(--safe-b));transform:translateX(-50%) translateY(20px);z-index:200;
+  background:var(--text);color:var(--bg);padding:12px 20px;border-radius:999px;font-size:13.5px;font-weight:600;
+  box-shadow:var(--shadow-lg);display:flex;align-items:center;gap:8px;opacity:0;pointer-events:none;
+  transition:opacity .25s ease, transform .25s ease;
+}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+.toast .icon{width:15px;height:15px;}
+
+/* ===================== MISC ===================== */
+.skeleton{background:linear-gradient(90deg,var(--bg-soft) 25%,var(--border) 37%,var(--bg-soft) 63%);background-size:400% 100%;animation:shimmer 1.4s ease infinite;}
+@keyframes shimmer{0%{background-position:100% 0;}100%{background-position:0 0;}}
+
+@media (max-width:640px){
+  .wrap{padding-inline:16px;}
+  .hero{padding:48px 16px 34px;}
+  .section{padding:38px 0;}
+  .panel-card{padding:20px;}
+  .cart-actions{grid-template-columns:1fr 1fr;}
+  .road-item{flex-wrap:wrap;row-gap:8px;}
+  .road-name{min-width:0;flex:1 1 auto;}
+  .road-note{min-width:0;flex:1 1 100%;order:3;}
+  .road-stars{order:2;margin-left:auto;}
+}
+
+@media print{
+  .topbar,.controls,.cart-fab,.cart-panel,.cart-overlay,.hero-cta,.toast,footer .no-print{display:none!important;}
+  body{background:#fff;color:#000;}
+  .card{break-inside:avoid;box-shadow:none;border:1px solid #ccc;}
+  .tile{display:none;}
+  .section{padding:14px 0;}
+}
+</style>
+</head>
+<body>
+
+<!-- ============ ICON SPRITE ============ -->
+<svg class="visually-hidden" aria-hidden="true">
+<defs>
+<symbol id="i-droplet" viewBox="0 0 24 24"><path d="M12 2.5C9 7 5.5 11 5.5 15a6.5 6.5 0 0 0 13 0c0-4-3.5-8-6.5-12.5Z"/></symbol>
+<symbol id="i-bubbles" viewBox="0 0 24 24"><path d="M12 3C9 7.2 5.8 11 5.8 14.8a6.2 6.2 0 0 0 12.4 0C18.2 11 15 7.2 12 3Z"/><circle cx="9" cy="17" r="1.1" fill="currentColor" stroke="none"/><circle cx="13.5" cy="19" r="0.8" fill="currentColor" stroke="none"/></symbol>
+<symbol id="i-dairy" viewBox="0 0 24 24"><path d="M9 2.5h6v3.6l2 3v10.9a1.6 1.6 0 0 1-1.6 1.6H8.6A1.6 1.6 0 0 1 7 20V9.1l2-3V2.5Z"/><path d="M7.4 12h9.2"/></symbol>
+<symbol id="i-meat" viewBox="0 0 24 24"><ellipse cx="12" cy="12" rx="8.5" ry="6"/><path d="M6 9.5c2 1 10 1 12 0M6 14.5c2-1 10-1 12 0"/></symbol>
+<symbol id="i-fish" viewBox="0 0 24 24"><path d="M3 12c3-4 8-6.5 13-6.5 2 0 3.5 3 3.5 6.5s-1.5 6.5-3.5 6.5C11 18.5 6 16 3 12Z"/><path d="M19.5 12 22 9m-2.5 3L22 15"/><circle cx="8.5" cy="10.5" r="0.9" fill="currentColor" stroke="none"/></symbol>
+<symbol id="i-poultry" viewBox="0 0 24 24"><path d="M14 3c3 0 6 3 6 7 0 3-2 4-3 6l-2.5 5-2-3.5L9 21l-1.5-3L5 20l1.5-4C5 14 4 12 4 9c0-3.5 3-6 6-6 1.6 0 3 1.1 4 2Z"/></symbol>
+<symbol id="i-wheat" viewBox="0 0 24 24"><path d="M12 21V9"/><path d="M12 9c0-3 2-5 5-6-1 3-2 5-5 6Zm0 0C12 6 10 4 7 3c1 3 2 5 5 6Z"/><path d="M12 14c0-2.4 1.6-4 4-4.7-0.8 2.4-1.6 4-4 4.7Zm0 0c0-2.4-1.6-4-4-4.7 0.8 2.4 1.6 4 4 4.7Z"/></symbol>
+<symbol id="i-leaf" viewBox="0 0 24 24"><path d="M4 20C4 10 11 4 20 4c0 9-6 16-16 16Z"/><path d="M5 19c4-4 7-7 12-12"/></symbol>
+<symbol id="i-apple" viewBox="0 0 24 24"><path d="M12.3 8.4c2.6-2.4 6.2-1.3 6.9 2 .7 3.3-1.4 8.1-4.4 9.9-1.1.6-1.7.6-2.8 0-3-1.8-5.1-6.6-4.4-9.9.7-3.3 4.3-4.4 6.9-2Z"/><path d="M12.3 8.4c0-2 .5-3.4 1.9-4.6"/></symbol>
+<symbol id="i-cacao" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="3"/><path d="M4 9h16M4 14h16M9 4v16M14 4v16"/></symbol>
+<symbol id="i-grape" viewBox="0 0 24 24"><path d="M12 3v3"/><circle cx="12" cy="9" r="2"/><circle cx="9" cy="12.5" r="2"/><circle cx="15" cy="12.5" r="2"/><circle cx="7" cy="16.5" r="2"/><circle cx="12" cy="16.5" r="2"/><circle cx="17" cy="16.5" r="2"/><circle cx="9.5" cy="20" r="2"/><circle cx="14.5" cy="20" r="2"/></symbol>
+<symbol id="i-beer" viewBox="0 0 24 24"><path d="M5 9h11v9a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V9Z"/><path d="M16 10.5h1.5a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2H16"/><path d="M5 9c0-2 .5-4 3-4.5M9 9c0-2.4-1-3.3.5-5"/></symbol>
+<symbol id="i-search" viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m20 20-4.8-4.8"/></symbol>
+<symbol id="i-x" viewBox="0 0 24 24"><path d="M5 5l14 14M19 5 5 19"/></symbol>
+<symbol id="i-chevron" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol>
+<symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+<symbol id="i-minus" viewBox="0 0 24 24"><path d="M5 12h14"/></symbol>
+<symbol id="i-heart" viewBox="0 0 24 24"><path d="M12 20.5S3.5 15.2 3.5 9.1C3.5 6 6 4 8.5 4c1.6 0 3 .8 3.5 2.2C12.5 4.8 13.9 4 15.5 4 18 4 20.5 6 20.5 9.1c0 6.1-8.5 11.4-8.5 11.4Z"/></symbol>
+<symbol id="i-cart" viewBox="0 0 24 24"><path d="M3 4h2.2l1 3M6.2 7l1.7 8.2a1.6 1.6 0 0 0 1.6 1.3h7.4a1.6 1.6 0 0 0 1.6-1.3L20 7H6.2Z"/><circle cx="10" cy="20" r="1.2" fill="currentColor" stroke="none"/><circle cx="17" cy="20" r="1.2" fill="currentColor" stroke="none"/></symbol>
+<symbol id="i-star" viewBox="0 0 24 24"><path d="M12 3.5 14.5 9l6 .8-4.4 4.1 1.1 5.9L12 17l-5.2 2.8 1.1-5.9L3.5 9.8l6-.8Z"/></symbol>
+<symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.4M12 19v2.5M4.5 12H2M22 12h-2.5M5.3 5.3l1.7 1.7M17 17l1.7 1.7M18.7 5.3 17 7M7 17l-1.7 1.7"/></symbol>
+<symbol id="i-moon" viewBox="0 0 24 24"><path d="M20 14.5A8.5 8.5 0 1 1 9.5 4 7 7 0 0 0 20 14.5Z"/></symbol>
+<symbol id="i-check" viewBox="0 0 24 24"><path d="m4.5 12.5 5 5 10-11"/></symbol>
+<symbol id="i-download" viewBox="0 0 24 24"><path d="M12 3v12m0 0-4.5-4.5M12 15l4.5-4.5M4 19h16"/></symbol>
+<symbol id="i-copy" viewBox="0 0 24 24"><rect x="8" y="8" width="12" height="12" rx="2.5"/><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/></symbol>
+<symbol id="i-printer" viewBox="0 0 24 24"><rect x="6" y="9" width="12" height="7" rx="1.5"/><path d="M7 9V4h10v5M8 21h8v-4H8v4Z"/></symbol>
+<symbol id="i-trash" viewBox="0 0 24 24"><path d="M5 7h14M9 7V5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2m-9 0 1 13a1.5 1.5 0 0 0 1.5 1.4h5a1.5 1.5 0 0 0 1.5-1.4L18 7"/></symbol>
+<symbol id="i-sparkle" viewBox="0 0 24 24"><path d="M12 3c.6 3.4 2.6 5.4 6 6-3.4.6-5.4 2.6-6 6-.6-3.4-2.6-5.4-6-6 3.4-.6 5.4-2.6 6-6Z"/><path d="M19 15c.3 1.4 1 2.1 2.4 2.4-1.4.3-2.1 1-2.4 2.4-.3-1.4-1-2.1-2.4-2.4 1.4-.3 2.1-1 2.4-2.4Z"/></symbol>
+<symbol id="i-snowflake" viewBox="0 0 24 24"><path d="M12 2v20M4.5 6.5l15 11M19.5 6.5l-15 11"/><path d="M12 6 9.8 4.4M12 6l2.2-1.6M12 18l-2.2 1.6M12 18l2.2 1.6M6 9.5 4 8.8m2 6.7-2 .7M18 9.5l2-.7m-2 6.7 2 .7"/></symbol>
+<symbol id="i-dumbbell" viewBox="0 0 24 24"><path d="M4 10v4M2.5 9.5v5M20 10v4m1.5-4.5v5M7 8v8m10-8v8M7 12h10"/></symbol>
+<symbol id="i-map" viewBox="0 0 24 24"><path d="m9 4-5 2v14l5-2 6 2 5-2V4l-5 2-6-2Z"/><path d="M9 4v14M15 6v14"/></symbol>
+</defs>
+</svg>
+
+<!-- ============ TOPBAR ============ -->
+<header class="topbar">
+  <div class="brand"><span class="flag" aria-hidden="true"><span></span><span></span><span></span></span> Garda Haul</div>
+  <div class="top-actions">
+    <button class="icon-btn" id="themeToggle" aria-label="Toggle dark mode">
+      <svg class="icon" id="themeIcon"><use href="#i-sun"></use></svg>
+    </button>
+    <button class="icon-btn" id="cartOpenBtn" aria-label="Open cart">
+      <svg class="icon"><use href="#i-cart"></use></svg>
+      <span class="cart-badge" id="cartBadge" hidden>0</span>
+    </button>
+  </div>
+</header>
+
+<!-- ============ HERO ============ -->
+<section class="hero">
+  <span class="badge-pill"><svg class="icon" style="width:13px;height:13px;"><use href="#i-map"></use></svg> Lake Garda • Veneto / Lombardy</span>
+  <h1>LAKE GARDA HAUL<span class="accentline">Italian Staples × High Protein × Road Trip Fuel</span></h1>
+  <p class="sub">A curated supermarket run for 3 people before the Dolomites.</p>
+  <div class="chips">
+    <span class="chip"><svg class="icon"><use href="#i-dairy"></use></svg> 3 people</span>
+    <span class="chip"><svg class="icon"><use href="#i-map"></use></svg> Road trip</span>
+    <span class="chip"><svg class="icon"><use href="#i-dumbbell"></use></svg> High protein</span>
+    <span class="chip"><svg class="icon"><use href="#i-grape"></use></svg> Regional Italian</span>
+    <span class="chip"><svg class="icon"><use href="#i-snowflake"></use></svg> Cooler required</span>
+  </div>
+  <div class="hero-cta">
+    <button class="btn btn-primary" id="loadRecommendedBtn"><svg class="icon" style="width:16px;height:16px;stroke:#fff;"><use href="#i-sparkle"></use></svg> Load Our Recommended Haul</button>
+    <button class="btn btn-ghost" id="scrollToCatalog">Browse the full list</button>
+  </div>
+</section>
+
+<!-- ============ CONTROLS ============ -->
+<div class="controls" id="controlsBar">
+  <div class="wrap">
+    <div class="controls-row">
+      <div class="search-box" id="searchBox">
+        <svg class="icon"><use href="#i-search"></use></svg>
+        <input type="search" id="searchInput" placeholder="Search products, brands, regions…" aria-label="Search products">
+        <button class="clear-btn" id="searchClear" aria-label="Clear search"><svg class="icon" style="width:14px;height:14px;"><use href="#i-x"></use></svg></button>
+      </div>
+      <select id="sortSelect" aria-label="Sort products">
+        <option value="recommended">Recommended</option>
+        <option value="protein-desc">Highest Protein</option>
+        <option value="kcal-asc">Lowest Calories</option>
+        <option value="price-asc">Lowest Price</option>
+        <option value="local">Local Priority</option>
+      </select>
+      <label class="toggle-pill" id="selectedOnlyLabel">
+        <input type="checkbox" id="selectedOnlyToggle">
+        <span class="dot"></span> Selected only
+      </label>
+    </div>
+    <div class="filter-scroll" id="filterScroll" role="tablist" aria-label="Category filters"></div>
+  </div>
+</div>
+
+<!-- ============ MAIN LAYOUT ============ -->
+<div class="wrap">
+<div class="layout-with-cart">
+<div class="layout-main">
+
+  <section class="section" id="catalog-section">
+    <div class="section-head">
+      <span class="section-eyebrow">The Catalog</span>
+      <h2 class="section-title">Build Your Haul</h2>
+      <p class="section-desc">Every item below is picked for a reason — filter by what you actually need, or search for a brand you already know.</p>
+      <p class="filter-count" id="resultCount"></p>
+    </div>
+    <div class="grid" id="productGrid"></div>
+  </section>
+
+  <section class="section" id="meals-section">
+    <div class="section-head">
+      <span class="section-eyebrow">Smart Meal Builder</span>
+      <h2 class="section-title">Quick Hotel Meals</h2>
+      <p class="section-desc">No kitchen, no problem — five combinations built entirely from the haul above.</p>
+    </div>
+    <div class="meal-grid" id="mealGrid"></div>
+  </section>
+
+  <section class="section" id="cooler-section">
+    <div class="section-head">
+      <span class="section-eyebrow">Keep Cold</span>
+      <h2 class="section-title">The Cooler Section</h2>
+    </div>
+    <div class="panel-card">
+      <div class="panel-icon"><svg class="icon" style="width:30px;height:30px;stroke-width:1.4;"><use href="#i-snowflake"></use></svg></div>
+      <div class="panel-stats">
+        <div class="stat-block"><div class="num" id="coolerCountAll">0</div><div class="lbl">refrigerated products in catalog</div></div>
+        <div class="stat-block"><div class="num" id="coolerCountCart">0</div><div class="lbl">refrigerated items in your cart</div></div>
+        <div class="stat-block"><div class="num" id="coolerWeight">0 kg</div><div class="lbl">estimated refrigerated weight</div></div>
+      </div>
+      <p class="panel-note">Pack these together in the insulated cooler bag with frozen ice packs before sightseeing.</p>
+    </div>
+  </section>
+
+  <section class="section" id="roadtrip-section">
+    <div class="section-head">
+      <span class="section-eyebrow">On The Move</span>
+      <h2 class="section-title">Best Car &amp; Daypack Foods</h2>
+      <p class="section-desc">Ranked by how well they survive a warm glovebox and a bumpy road.</p>
+    </div>
+    <div class="road-list" id="roadList"></div>
+  </section>
+
+  <section class="section" id="dashboard-section">
+    <div class="section-head">
+      <span class="section-eyebrow">Nutrition Dashboard</span>
+      <h2 class="section-title">Your Haul, By The Numbers</h2>
+      <p class="section-desc">Updates live as you add or remove items. Approximate supermarket pricing and nutrition — verify package labels in store.</p>
+    </div>
+    <div class="rings">
+      <div class="ring-block">
+        <div class="ring"><svg><circle class="track" cx="60" cy="60" r="50"></circle><circle class="prog" id="ringProtein" cx="60" cy="60" r="50" stroke="#3a7d44"></circle></svg><div class="ring-val"><span class="n" id="ringProteinVal">0</span><span class="u">g protein</span></div></div>
+        <div class="ring-label">Total Protein</div>
+      </div>
+      <div class="ring-block">
+        <div class="ring"><svg><circle class="track" cx="60" cy="60" r="50"></circle><circle class="prog" id="ringKcal" cx="60" cy="60" r="50" stroke="#b8862b"></circle></svg><div class="ring-val"><span class="n" id="ringKcalVal">0</span><span class="u">kcal</span></div></div>
+        <div class="ring-label">Total Calories</div>
+      </div>
+      <div class="ring-block">
+        <div class="ring"><svg><circle class="track" cx="60" cy="60" r="50"></circle><circle class="prog" id="ringCost" cx="60" cy="60" r="50" stroke="#0071e3"></circle></svg><div class="ring-val"><span class="n" id="ringCostVal">€0</span><span class="u">estimated</span></div></div>
+        <div class="ring-label">Total Cost</div>
+      </div>
+    </div>
+    <div class="dash-grid">
+      <div class="dash-card"><div class="num" id="statProteinItems">0</div><div class="lbl">Protein-rich items</div></div>
+      <div class="dash-card"><div class="num" id="statLocal">0</div><div class="lbl">Local / regional picks</div></div>
+      <div class="dash-card"><div class="num" id="statCooler">0</div><div class="lbl">Refrigerated items</div></div>
+      <div class="dash-card"><div class="num" id="statDrinks">0</div><div class="lbl">Beverages</div></div>
+      <div class="dash-card"><div class="num" id="statPerPerson">€0</div><div class="lbl">Cost per person</div></div>
+      <div class="dash-card"><div class="num" id="statProteinPerEuro">0g</div><div class="lbl">Protein per €</div></div>
+    </div>
+  </section>
+
+  <footer>
+    <p>Approximate supermarket pricing and nutrition — verify package labels in store.</p>
+    <p>Built for a Lake Garda haul before continuing into the Dolomites 🇮🇹</p>
+  </footer>
+
+</div><!-- /layout-main -->
+
+<!-- ============ CART PANEL ============ -->
+<div class="cart-overlay" id="cartOverlay"></div>
+<aside class="cart-panel" id="cartPanel" aria-label="Shopping cart">
+  <div class="cart-head">
+    <h2>Your Haul</h2>
+    <button class="icon-btn" id="cartCloseBtn" aria-label="Close cart"><svg class="icon"><use href="#i-x"></use></svg></button>
+  </div>
+  <div class="cart-body" id="cartBody"></div>
+  <div class="cart-presets">
+    <button class="btn btn-ghost btn-sm btn-block" id="presetRecommended"><svg class="icon" style="width:14px;height:14px;"><use href="#i-sparkle"></use></svg> Recommended haul</button>
+    <button class="btn btn-ghost btn-sm btn-block" id="presetHighProtein"><svg class="icon" style="width:14px;height:14px;"><use href="#i-dumbbell"></use></svg> High-protein haul</button>
+    <button class="btn btn-ghost btn-sm btn-block" id="presetFamily"><svg class="icon" style="width:14px;height:14px;"><use href="#i-heart"></use></svg> Family essentials</button>
+  </div>
+  <div class="cart-totals">
+    <div class="totals-row"><span>Units</span><span id="totUnits">0</span></div>
+    <div class="totals-row"><span>Est. calories</span><span id="totKcal">0 kcal</span></div>
+    <div class="totals-row"><span>Est. protein</span><span id="totProtein">0 g</span></div>
+    <div class="totals-row"><span>Refrigerated weight</span><span id="totCoolerWeight">0 kg</span></div>
+    <div class="totals-row"><span>Beverage weight</span><span id="totDrinkWeight">0 kg</span></div>
+    <div class="totals-row"><span>Total haul weight</span><span id="totWeight">0 kg</span></div>
+    <div class="totals-row main"><span>Estimated total</span><span id="totPrice">€0</span></div>
+  </div>
+  <div class="cart-actions">
+    <button class="btn btn-ghost btn-sm" id="clearCartBtn"><svg class="icon" style="width:14px;height:14px;"><use href="#i-trash"></use></svg> Clear</button>
+    <button class="btn btn-ghost btn-sm" id="printBtn"><svg class="icon" style="width:14px;height:14px;"><use href="#i-printer"></use></svg> Print</button>
+    <button class="btn btn-ghost btn-sm" id="saveJsonBtn"><svg class="icon" style="width:14px;height:14px;"><use href="#i-download"></use></svg> Save JSON</button>
+    <button class="btn btn-ghost btn-sm" id="copyListBtn"><svg class="icon" style="width:14px;height:14px;"><use href="#i-copy"></use></svg> Copy list</button>
+  </div>
+</aside>
+
+</div><!-- /layout-with-cart -->
+</div><!-- /wrap -->
+
+<button class="cart-fab" id="cartFab" aria-label="Open cart">
+  <svg class="icon"><use href="#i-cart"></use></svg>
+  <span class="cart-badge" id="cartBadgeFab" hidden>0</span>
+</button>
+
+<div class="toast" id="toast" role="status" aria-live="polite">
+  <svg class="icon"><use href="#i-check"></use></svg>
+  <span id="toastMsg">Added to haul</span>
+</div>
+
+<script>
+(function(){
+"use strict";
+
+/* ===================== ICON HELPERS ===================== */
+function svgUse(id){ return '<svg class="icon"><use href="#'+id+'"></use></svg>'; }
+var CAT_ICON = { protein:'i-meat', dairy:'i-dairy', drinks:'i-droplet', bread:'i-wheat', fruitveg:'i-apple', snacks:'i-cacao', wine:'i-grape' };
+var CAT_LABEL = { protein:'Protein', dairy:'Dairy', drinks:'Drinks', bread:'Bread & Carbs', fruitveg:'Fruit & Veg', snacks:'Snacks', wine:'Wine & Beer' };
+
+/* ===================== PRODUCT DATA ===================== */
+var F = ['id','name','brand','category','sub','extra','desc','why','pack','pLow','pHigh','kcal','protein','carbs','fat','bestFor','icon','priority','recQty','alt','weightG','region'];
+
+var RAW = [
+// -------- WATER --------
+['wat-sanben-naturale','San Benedetto Naturale','San Benedetto','drinks','Still Water','','Everyday still mineral water bottled in the Veneto region.','The default hydration base for the whole trip — cheap, light, and truly local.','1.5 L',0.4,0.8,0,0,0,0,'Road Snack','droplet',1,6,'Recoaro Naturale, Levissima Naturale',1500,'Veneto'],
+['wat-sanben-frizzante','San Benedetto Frizzante','San Benedetto','drinks','Sparkling Water','','Lightly sparkling regional mineral water.','A crisp alternative to still water for the car and dinner table.','1.5 L',0.5,0.9,0,0,0,0,'','bubbles',0,1,'Ferrarelle, Lete',1500,'Veneto'],
+['wat-levissima','Levissima Naturale','Levissima','drinks','Still Water','','Alpine spring water, very light and clean-tasting.','A gentle everyday still water sourced from the Alps.','1.5 L',0.5,1.0,0,0,0,0,'','droplet',0,0,'',1500,'Italy'],
+['wat-pellegrino','S.Pellegrino Frizzante','S.Pellegrino','drinks','Sparkling Water','','The classic Italian sparkling mineral water, fine bubbles.','Worth a few bottles of the iconic label on the dinner table.','750 ml',0.8,1.5,0,0,0,0,'Hotel Meal','bubbles',0,0,'Acqua Panna (still)',750,'Italy'],
+['wat-ferrarelle','Ferrarelle','Ferrarelle','drinks','Naturally Sparkling','','Naturally effervescent mineral water, mineral-forward taste.','Naturally carbonated at the source rather than injected — a nice detail.','1.5 L',0.7,1.2,0,0,0,0,'','bubbles',0,0,'Lete',1500,'Italy'],
+// -------- ZERO / SOFT DRINKS --------
+['drk-cokezero','Coca-Cola Zero','Coca-Cola','drinks','Zero Sugar Soda','','Zero-sugar cola, identical everywhere but always useful.','The reliable fallback when nobody wants to be adventurous.','330 ml can',0.7,1.0,0.3,0,0,0,'Road Snack','bubbles',0,6,'',330,'Italy'],
+['drk-sanpell-zero','Sanpellegrino Zero Citrus','Sanpellegrino','drinks','Zero Sugar Soda','','Bittersweet Italian citrus soda without the sugar.','A more interesting zero-sugar option than plain cola.','330 ml',0.8,1.2,2,0,0.5,0,'','bubbles',0,0,'Chinò Sanpellegrino Zero',330,'Italy'],
+['drk-chino','Chinò Sanpellegrino Zero','Sanpellegrino','drinks','Zero Sugar Soda','','Zero-sugar chinotto, Italy’s bittersweet citrus soda.','Worth tasting once even if you don’t buy a case.','330 ml',0.8,1.2,2,0,0.5,0,'','bubbles',0,0,'',330,'Italy'],
+['drk-estathe-zero','Estathé Zero','Estathé','drinks','Iced Tea','','Zero-sugar Italian iced tea, lemon or peach.','A lighter, less sweet option than soda for the afternoons.','500 ml',1.0,1.5,1,0,0.2,0,'','bubbles',0,0,'',500,'Italy'],
+// -------- HIGH-PROTEIN DAIRY --------
+['dai-hipro','Danone HiPRO','Danone','dairy','High-Protein Yogurt','cooler','High-protein yogurt drink or pot, plain or fruit.','One of the easiest 20g+ protein hits in any Italian fridge aisle.','200 g',1.5,2.5,57,10,4,0.2,'High Protein','dairy',1,4,'',200,'Italy'],
+['dai-muller','Müller High Protein','Müller','dairy','High-Protein Yogurt / Pudding','cooler','High-protein pudding, drink or yogurt in several flavors.','Widely stocked and genuinely tastes like a treat, not a supplement.','200 g',1.3,2.0,75,10,5,1.5,'High Protein','dairy',0,0,'',200,'Italy'],
+['dai-fage','Fage Total 0% / 2%','Fage','dairy','Greek Yogurt','cooler','Thick strained Greek yogurt, 0% or 2% fat.','Not Italian, but excellent macros and available almost everywhere.','150 g',1.5,2.5,57,10,4,0.4,'Breakfast','dairy',1,2,'',150,'Italy'],
+['dai-granarolo-hp','Granarolo High Protein','Granarolo','dairy','High-Protein Dairy','cooler','Italian dairy giant’s high-protein yogurt line.','A solid Italian-brand alternative when HiPRO or Müller sell out.','125 g',1.5,2.5,60,10,4,1.0,'High Protein','dairy',0,0,'',125,'Italy'],
+['dai-yomo','Yomo Yogurt','Yomo','dairy','Classic Yogurt','cooler','Simple, well-made everyday Italian yogurt.','Not every yogurt needs to be a protein product — this one’s just genuinely good.','125 g',0.8,1.5,65,3.5,8,1.5,'Breakfast','dairy',0,4,'Granarolo, Vipiteno',125,'Italy'],
+['dai-vipiteno','Vipiteno Yogurt','Vipiteno / Sterzing','dairy','Alpine Whole-Milk Yogurt','cooler','Rich South Tyrolean whole-milk yogurt.','A preview of the alpine dairy we’ll raid properly in Bolzano.','125 g',0.8,1.8,90,3.8,12,3.5,'Breakfast','dairy',0,0,'Mila',125,'South Tyrol Preview'],
+// -------- KEFIR --------
+['dai-kefir-granarolo','Granarolo Kefir Bianco','Granarolo','dairy','Plain Kefir','cooler','Plain, unflavored milk kefir.','Good for gut health and an easy pour-and-drink breakfast.','500 ml',1.5,2.5,50,3.3,4.5,1.5,'Breakfast','dairy',1,1,'Fattoria Scaldasole',500,'Italy'],
+['dai-kefir-mila','Mila Kefir','Mila','dairy','Plain Kefir','cooler','South Tyrolean dairy cooperative’s kefir.','Another good plain option if Granarolo isn’t stocked.','500 ml',1.5,2.5,55,3.4,4.8,1.8,'','dairy',0,0,'',500,'South Tyrol Preview'],
+// -------- COTTAGE CHEESE --------
+['dai-fiocchi-jocca','Jocca Fiocchi di Latte','Jocca','dairy','Cottage Cheese','cooler','The classic Italian fiocchi di latte — soft, mild curd cheese.','Genuinely one of the best-value protein foods in the whole supermarket.','200 g',1.5,2.5,98,12,3.5,4.3,'High Protein','dairy',1,2,'Granarolo, Exquisa',200,'Italy'],
+['dai-fiocchi-granarolo','Granarolo Fiocchi di Latte','Granarolo','dairy','Cottage Cheese','cooler','Granarolo’s version of fiocchi di latte.','Compare the label against Jocca — the cheaper one is often just as good.','200 g',1.5,2.5,90,11,3.8,3.5,'','dairy',0,0,'Exquisa',200,'Italy'],
+// -------- BRESAOLA --------
+['meat-bresaola','Bresaola della Valtellina IGP','Rigamonti','protein','Cured Beef','cooler,local','Air-dried, salted beef from Valtellina — deep red, paper-thin, almost fat-free.','The single best protein food in this whole supermarket: huge protein, minimal fat and carbs.','90 g',3.5,5.5,151,32,0.5,2.6,'High Protein','meat',1,3,'Fratelli Beretta, Citterio, Negroni',90,'Lombardy'],
+// -------- PROSCIUTTO / SALUMI --------
+['meat-prosciutto-parma','Prosciutto di Parma DOP','Parmacotto','protein','Cured Ham','cooler,local','Sweet, delicately salted air-cured ham from Parma.','One of Italy’s great DOP hams — chase the designation more than a brand.','80 g',3.0,5.0,268,26,0.5,18,'Hotel Meal','meat',0,1,'Beretta, Citterio',80,'Emilia-Romagna'],
+['meat-prosciutto-sandaniele','Prosciutto di San Daniele DOP','Citterio','protein','Cured Ham','cooler,local','Friuli’s answer to Parma ham — slightly sweeter and softer.','Worth comparing side-by-side with Parma ham to pick a favorite.','80 g',3.0,5.0,260,27,0.4,17,'','meat',0,0,'Beretta, Negroni',80,'Friuli'],
+['meat-cotto','Prosciutto Cotto Alta Qualità','Negroni','protein','Cooked Ham','cooler','Good-quality cooked ham, leaner than crudo.','Surprisingly useful for sandwiches and leaner meals, especially for the kid.','100 g',2.0,4.0,130,20,1,5,'Hotel Meal','meat',0,1,'Beretta, Citterio',100,'Italy'],
+['meat-mortadella','Mortadella Bologna IGP','Fratelli Beretta','protein','Cured Sausage','cooler,local','Silky, delicately spiced pork sausage, sometimes studded with pistachio.','Fun and local — get a small pack once, not as a daily staple.','100 g',2.0,4.0,288,15,2,25,'','meat',0,0,'Negroni',100,'Emilia-Romagna'],
+// -------- TUNA --------
+['fish-callipo','Callipo Tonno al Naturale','Callipo','protein','Canned Tuna','','Premium Calabrian tuna packed in water.','My first choice if it’s stocked — noticeably better texture than mass brands.','80 g',2.0,4.0,116,25,0,1,'Road Snack','fish',1,2,'',80,'Calabria'],
+['fish-riomare-naturale','Rio Mare Tonno al Naturale','Rio Mare','protein','Canned Tuna','','Ubiquitous Italian tuna in water — the everyday macro-friendly option.','Sold everywhere, always reliable, easy to eat straight from the can.','80 g',1.5,3.0,112,25,0,0.8,'High Protein','fish',1,2,'As do Mar, Nostromo, Mareblu',80,'Italy'],
+['fish-riomare-olio',"Rio Mare Tonno in Olio d'Oliva",'Rio Mare','protein','Canned Tuna','','The same tuna packed in olive oil — richer and more indulgent.','Pick this one when calories matter less than flavor.','80 g',2.0,3.5,190,24,0,10,'','fish',0,0,'',80,'Italy'],
+// -------- SARDINES / MACKEREL --------
+['fish-sgombro','Rio Mare Sgombro','Rio Mare','protein','Canned Mackerel','','Canned mackerel in olive oil, rich in omega-3.','A tasty change from tuna with a bigger fat/omega-3 payoff.','125 g',2.0,4.0,208,22,0,13,'','fish',0,2,'Nostromo, Callipo',125,'Italy'],
+['fish-delicius','Delicius Sardines / Anchovies','Delicius','protein','Canned Sardines','','Preserved sardines or anchovies in oil.','Good pantry protein for piadina fillings or a quick snack on bread.','120 g',2.0,4.0,180,20,0,11,'','fish',0,0,'',120,'Italy'],
+// -------- READY CHICKEN / TURKEY --------
+['meat-pollo-aia','AIA Petto di Pollo','AIA','protein','Ready Chicken Breast','cooler','Pre-cooked, sliced chicken breast.','Fast, lean protein for piadina and salads with zero prep.','120 g',2.5,4.5,105,23,1,1.5,'Hotel Meal','poultry',0,1,'Amadori',120,'Italy'],
+['meat-tacchino-beretta','Beretta Arrosto di Tacchino','Beretta','protein','Roast Turkey Breast','cooler','Sliced roast turkey breast.','Slightly leaner than chicken, great in piadina with mustard.','120 g',2.5,4.0,110,22,1.5,2,'','poultry',0,0,'Negroni',120,'Italy'],
+// -------- EGGS --------
+['egg-freerange','Free-Range Eggs','Local Dairy','protein','Eggs','cooler',"Italian free-range eggs, allevate all'aperto.",'Only worth buying if the room has a kettle or hot plate to cook them.','6-pack',1.5,2.5,143,13,1,10,'Breakfast','poultry',0,0,'',330,'Italy'],
+// -------- PARMIGIANO / GRANA --------
+['chz-parm24','Parmigiano Reggiano DOP 24 Mesi','Parmareggio','dairy','Hard Cheese','cooler,local','Aged 24-month Parmigiano — the classic sweet spot.','High protein, endlessly portable, almost impossible to regret buying.','250 g',4.0,7.0,392,33,0,29,'High Protein','dairy',1,1,'Zanetti, Ambrosi',250,'Emilia-Romagna'],
+['chz-parm36','Parmigiano Reggiano 30–36 Mesi','Zanetti','dairy','Aged Hard Cheese','cooler,local','Longer-aged Parmigiano with a more intense, crystalline bite.','Worth a small wedge if you want something punchier than the 24-month.','200 g',5.0,8.0,400,34,0,29.5,'Local Specialty','dairy',0,0,'Ambrosi',200,'Emilia-Romagna'],
+['chz-grana','Grana Padano DOP Riserva','Ambrosi','dairy','Hard Cheese','cooler,local','Lombardy/Veneto’s own hard cheese, milder than Parmigiano.','Cheaper than Parmigiano and completely appropriate here — worth comparing side by side.','250 g',3.0,6.0,396,33,0,29,'','dairy',0,0,'Zanetti, Agriform',250,'Veneto'],
+// -------- LOCAL / REGIONAL CHEESE --------
+['chz-monteveronese','Monte Veronese DOP','Local Caseificio','dairy','Semi-Hard Cheese','cooler,local','Semi-hard cow’s milk cheese from the hills above Verona.','The one cheese I’d deliberately seek out here — it barely travels outside this region.','200 g',3.0,6.0,350,24,1,28,'Local Specialty','dairy',1,1,'',200,'Veneto'],
+['chz-asiago','Asiago DOP','Local Caseificio','dairy','Semi-Hard Cheese','cooler,local','Veneto’s famous cow’s milk cheese, fresh or aged.','A very appropriate regional choice alongside Monte Veronese.','200 g',3.0,6.0,361,25,1,29,'','dairy',0,0,'',200,'Veneto'],
+['chz-taleggio','Taleggio DOP','Local Caseificio','dairy','Washed-Rind Cheese','cooler,local','Soft, washed-rind cheese with a pungent aroma and creamy paste.','A funkier option if you want to branch out from hard cheeses.','200 g',3.0,6.0,315,19,0.5,26,'','dairy',0,0,'',200,'Lombardy'],
+['chz-gorgonzola','Gorgonzola DOP','Local Caseificio','dairy','Blue Cheese','cooler,local','Creamy Italian blue cheese, dolce or piccante.','Great melted onto fresh bread or stirred into pasta if you’re cooking.','200 g',3.0,6.0,330,19,0.5,28,'','dairy',0,0,'',200,'Lombardy'],
+['chz-provolone','Provolone Valpadana DOP','Local Caseificio','dairy','Semi-Hard Cheese','cooler,local','Firm, stretched-curd cheese, mild dolce or sharper piccante.','A good sandwich cheese alternative to mozzarella.','200 g',3.0,6.0,351,25,1,27,'','dairy',0,0,'',200,'Po Valley'],
+// -------- MOZZARELLA / BURRATA --------
+['chz-bufala','Mozzarella di Bufala Campana DOP','Galbani Santa Lucia','dairy','Fresh Mozzarella','cooler,local','Fresh buffalo-milk mozzarella, soft and milky.','Go bufala over vaccina here — worth the difference in Italy.','125 g',2.0,4.0,264,17,2,20,'Hotel Meal','dairy',1,1,'Vallelata, Mandara, Granarolo',125,'Campania'],
+['chz-burrata','Burrata','Local Caseificio','dairy','Fresh Cheese','cooler','Mozzarella shell filled with cream and soft curd.','Vacation cheese, not a macro play — buy one fresh, not six.','125 g',2.0,5.0,300,13,2,27,'Hotel Meal','dairy',0,1,'',125,'Puglia'],
+// -------- BREAD --------
+['bread-ciabatta','Fresh Ciabatta','Bakery Counter','bread','Bread','','Airy, crusty white bread with an open crumb.','The obvious, excellent everyday sandwich bread — buy fresh daily.','1 loaf',1.0,3.0,265,8,50,1.5,'Hotel Meal','wheat',0,1,'Rosette, Pane di Grano Duro',250,'Italy'],
+['bread-rosette','Rosette / Michette','Bakery Counter','bread','Bread Rolls','','Small, hollow-ish crusty rolls.','Fantastic paired with salumi — the bread does half the work.','4-pack',1.0,3.0,270,9,52,1.8,'','wheat',0,0,'',300,'Italy'],
+['bread-granoduro','Pane di Grano Duro','Bakery Counter','bread','Durum Wheat Bread','','Dense, golden durum-wheat bread.','A heartier alternative to ciabatta with a longer shelf life.','1 loaf',2.0,4.0,275,9,53,1.5,'','wheat',0,0,'',500,'Italy'],
+['bread-integrale','Pane Integrale','Bakery Counter','bread','Wholegrain Bread','','Wholegrain loaf, sometimes sold as pane ai cereali.','The fiber-forward option when you want something less refined.','1 loaf',2.0,4.0,240,9,45,2.5,'Breakfast','wheat',0,0,'Pane ai Cereali',400,'Italy'],
+['bread-focaccia','Fresh Focaccia','Bakery Counter','bread','Olive Oil Flatbread','','Pillowy flatbread glossy with olive oil and salt.','If it looks freshly baked, just buy it — resistance is futile.','1 piece',2.0,5.0,290,7,45,9,'','wheat',0,0,'',300,'Italy'],
+// -------- PIADINA --------
+['bread-piadina','Piadina Romagnola IGP','Loriana','bread','Flatbread','local','Thin Romagna flatbread, ideal for rolling around fillings.','The hotel-room cheat code: piadina + bresaola + rocket + Parmigiano, done.','3-pack',1.5,3.0,280,7,45,8,'Hotel Meal','wheat',1,2,'Roberto, Ster, Casa della Piada',300,'Emilia-Romagna'],
+// -------- TARALLI / CRACKERS --------
+["snk-taralli","Taralli (Finocchio / Olio d'Oliva)",'Fiore di Puglia','snacks','Savory Crackers','','Crunchy ring-shaped snacks, often flavored with fennel or olive oil.','Get the fennel (finocchio) version at least once — genuinely addictive road food.','250 g',1.5,3.0,460,9,60,20,'Road Snack','wheat',0,1,'Terre di Puglia, Antonio Fiore',250,'Puglia'],
+['snk-crackers','Gran Pavesi Crackers','Gran Pavesi','snacks','Crackers','','Classic thin, layered Italian crackers.','The mainstream fallback if taralli aren’t around.','250 g',1.0,2.5,470,9,65,18,'','wheat',0,1,'',250,'Italy'],
+// -------- OATS --------
+["brk-oats",'Fiocchi d’Avena (Oats)','Fiorentini / Náttúra','bread','Rolled Oats','','Plain rolled oats for a quick breakfast bowl.','Buy 500 g, not a kilogram — we’re not importing the whole pantry.','500 g',2.0,4.0,375,13,60,7,'Breakfast','wheat',0,1,'Quaker, Probios',500,'Italy'],
+// -------- RICE / CORN CAKES --------
+['brk-ricecakes','Gallette di Riso / Mais','Fiorentini','snacks','Rice & Corn Cakes','','Light rice or corn cakes, great with toppings.','Corn cakes topped with fiocchi di latte or bresaola make surprisingly good car food.','130 g',1.5,3.0,385,8,80,3,'Road Snack','wheat',0,1,'Náttúra, Probios',130,'Italy'],
+// -------- FRUIT --------
+['frt-banana','Bananas','Local Market','fruitveg','Fruit','','Portable, filling, and always in season.','Still human, still love bananas — excellent portable carbs for the car.','1 kg',1.5,2.5,89,1.1,23,0.3,'Road Snack','apple',0,1,'',1000,'Italy'],
+['frt-uva','Uva Italia (Grapes)','Local Market','fruitveg','Fruit','','Sweet Italian table grapes, late-September peak season.','Look for seedless varieties for the kid — Uva Italia or Uva Vittoria if still around.','1 kg',2.0,4.0,69,0.6,18,0.2,'Road Snack','apple',0,1,'Uva Vittoria (seedless)',1000,'Italy'],
+['frt-mele','Südtirol Apples (Mixed)','Val Venosta','fruitveg','Fruit','','Golden Delicious, Gala, Kanzi or Pink Lady from Alto Adige.','Grab a mix — a genuine preview of what’s waiting in the Dolomites.','1 kg',1.5,3.0,52,0.3,14,0.2,'Hiking Fuel','apple',0,1,'Golden Delicious, Gala, Kanzi, Pink Lady',1000,'South Tyrol Preview'],
+['frt-pere','Italian Pears','Local Market','fruitveg','Fruit','','Juicy autumn pears, a classic September fruit.','A nice change of pace from apples for the fruit bowl.','1 kg',1.5,3.0,57,0.4,15,0.1,'','apple',0,0,'',1000,'Italy'],
+['frt-prugne','Italian Plums','Local Market','fruitveg','Fruit','','Sweet-tart late-summer plums.','Good if they still look excellent this late in September.','1 kg',1.5,3.0,46,0.7,11,0.3,'','apple',0,1,'Figs, peaches if in season',1000,'Italy'],
+// -------- VEGETABLES --------
+['veg-datterini','Datterini Tomatoes','Local Market','fruitveg','Vegetables','local','Small, date-shaped tomatoes, intensely sweet.','One of the highest-value finds in the supermarket — datterini + mozzarella + EVOO is basically cheating.','500 g',2.0,4.0,18,0.9,3.9,0.2,'Hotel Meal','leaf',1,2,'Pachino IGP, cherry tomatoes',500,'Sicily / Italy'],
+['veg-cetriolo','Cucumber','Local Market','fruitveg','Vegetables','','Crisp, hydrating and neutral.','Perfect for a quick hotel-room salad with almost no prep.','1 each',0.8,1.5,15,0.7,3.6,0.1,'','leaf',0,1,'',300,'Italy'],
+['veg-carote','Carrots','Local Market','fruitveg','Vegetables','','Sweet, crunchy and easy to snack on raw.','A genuinely good car snack that doesn’t need refrigeration.','500 g',1.0,2.0,41,0.9,10,0.2,'Road Snack','leaf',0,1,'',500,'Italy'],
+['veg-rucola','Rucola (Rocket)','Local Market','fruitveg','Salad Greens','cooler','Peppery salad leaves.','The green half of the bresaola + rocket + Parmigiano combo.','100 g',1.0,2.0,25,2.6,3.7,0.7,'Hotel Meal','leaf',0,1,'',100,'Italy'],
+['veg-insalata','Prewashed Mixed Salad','Local Market','fruitveg','Salad Greens','cooler','Ready-to-eat salad mix, no washing required.','Zero-effort greens for a hotel room with no kitchen.','150 g',1.5,3.0,15,1.4,2.9,0.2,'','leaf',0,1,'',150,'Italy'],
+['veg-peperoni','Bell Peppers','Local Market','fruitveg','Vegetables','','Sweet, colorful peppers.','Good raw with a dip, or roasted if you have any way to cook.','1 kg',2.0,4.0,31,1.0,6.0,0.3,'','leaf',0,0,'',500,'Italy'],
+// -------- OLIVE OIL --------
+['oil-garda','Olio Extra Vergine di Oliva Garda DOP','Local Producer','snacks','Olive Oil','local','Delicate, fragrant EVOO grown right on Lake Garda’s shores.','Buy this for place, not just macros — it’s genuinely tied to where we’re travelling.','250 ml',6.0,12.0,884,0,0,100,'Local Specialty','apple',1,1,'Garda Orientale DOP',250,'Garda'],
+// -------- CONDIMENTS --------
+['cond-balsamico','Aceto Balsamico di Modena IGP','Ponti','snacks','Vinegar','local','Sweet-tart aged balsamic vinegar.','A small bottle goes a very long way on salads and cheese.','150 ml',3.0,8.0,88,0.5,17,0,'','apple',0,0,'Ponti regular vinegar',150,'Emilia-Romagna'],
+['cond-pantry','Pantry Extras (Lemon, Mustard, Salt)','Various','snacks','Condiments','','Fresh lemon, a small mustard and basic seasoning.','Keep this category minimalist — finishing touches, not a shopping project.','Assorted',2.0,5.0,40,1,8,0.5,'','apple',0,1,'',200,'Italy'],
+// -------- PASTA --------
+['pantry-pasta','Rummo / La Molisana Pasta','Rummo','bread','Dried Pasta','','High-quality bronze-die dried pasta.','Only worth buying if the accommodation actually allows cooking.','500 g',1.2,2.5,353,12,71,1.5,'','wheat',0,0,'La Molisana, De Cecco, Garofalo, Voiello',500,'Italy'],
+// -------- NUTS --------
+['snk-nuts','Mixed Nuts (Walnuts / Almonds)','Noberasco','snacks','Nuts','','Plain walnuts, almonds or pistachios.','Easy to accidentally turn 20 g into 700 kcal in the car — small packs are your friend.','200 g',2.5,6.0,600,18,15,52,'Hiking Fuel','apple',0,1,'Ventura, Fatina',200,'Italy'],
+// -------- CHOCOLATE --------
+['choc-novi','Novi Fondente 70–85%','Novi','snacks','Dark Chocolate','','Excellent everyday Italian dark chocolate.','A reliably great supermarket dark bar — no need to overspend.','100 g',2.0,4.0,570,8,38,42,'','cacao',1,1,'Perugina Nero, Caffarel',100,'Italy'],
+['choc-perugina','Perugina Nero','Perugina','snacks','Dark Chocolate','','Classic Umbrian chocolate house, reliably good dark bars.','A very Italian household name worth trying at least once.','100 g',2.0,4.0,560,6,40,40,'','cacao',0,0,'',100,'Umbria'],
+['choc-caffarel','Caffarel Gianduia','Caffarel','snacks','Hazelnut Chocolate','','Piedmontese hazelnut-chocolate specialist.','Particularly good if you love gianduia — smoother than plain dark.','150 g',3.0,6.0,570,7,48,38,'','cacao',0,0,'Venchi',150,'Piedmont'],
+['choc-loacker','Loacker Quadratini','Loacker','snacks','Wafer Chocolate','','South Tyrolean wafer bars, light and crisp.','Nobody gets arrested for grabbing a pack early — the real raid happens in Bolzano.','125 g',2.0,4.0,530,6,58,30,'Daughter Pick','cacao',0,0,'',125,'South Tyrol Preview'],
+// -------- BISCUITS --------
+['bis-mulinobianco','Mulino Bianco Assortment','Mulino Bianco','snacks','Biscuits','','Abbracci, Baiocchi or Pan di Stelle — the supermarket institution.','Let your daughter pick one purely based on the picture on the box — that’s part of the trip.','350 g',1.5,3.5,470,6.5,64,20,'Daughter Pick','cacao',0,1,'Pavesi Gocciole',350,'Italy'],
+['bis-gocciole','Pavesi Gocciole','Pavesi','snacks','Chocolate Chip Biscuits','','Chocolate-chip-studded shortbread biscuits.','A well-loved classic if Mulino Bianco doesn’t win the shelf battle.','350 g',1.5,3.5,480,6,62,22,'','cacao',0,0,'',350,'Italy'],
+// -------- COFFEE --------
+['cof-moka','Lavazza / Illy Ground Coffee','Lavazza','drinks','Moka Coffee','','Ground coffee for a moka pot, if the room has one.','Only worth buying if we actually have a way to brew it.','250 g',3.0,7.0,2,0.3,0,0,'','droplet',0,0,'Illy, Kimbo, Vergnano',250,'Italy'],
+['cof-rtd','Ready-to-Drink Caffè Latte','Parmalat / Granarolo','drinks','Chilled Coffee Drink','cooler','Chilled coffee-milk drink from the dairy aisle.','The easy way to get an Italian coffee fix with zero equipment.','250 ml',1.0,3.0,60,3,6,2.5,'','droplet',0,0,'',250,'Italy'],
+// -------- BEER --------
+['beer-menabrea','Menabrea','Menabrea','wine','Beer','','A well-regarded mainstream Italian lager.','One of my preferred everyday Italian beers.','330 ml',1.0,2.0,43,0.5,3.5,0,'','beer',0,1,'',330,'Piedmont'],
+['beer-ichnusa','Ichnusa Non Filtrata','Ichnusa','wine','Beer','','Unfiltered Sardinian lager with more character than the standard version.','Worth trying the Non Filtrata specifically over the regular Ichnusa.','330 ml',1.0,2.0,45,0.6,3.8,0,'','beer',0,0,'',330,'Sardinia'],
+['beer-moretti','Birra Moretti','Birra Moretti','wine','Beer','','The easy, ubiquitous supermarket choice.','Reliable, everywhere, and honestly just a good lager.','330 ml',1.0,2.0,42,0.4,3.3,0,'','beer',0,1,'',330,'Italy'],
+['beer-messina','Birra Messina Cristalli di Sale','Birra Messina','wine','Beer','','Sicilian lager brewed with a pinch of sea salt.','Try Cristalli di Sale specifically — the standout version.','330 ml',1.0,2.0,43,0.4,3.5,0,'','beer',0,0,'FORST (save for South Tyrol)',330,'Sicily'],
+// -------- WINE --------
+['wine-bardolino','Bardolino DOC','Zeni','wine','Red Wine','local','Light, fruity red from the eastern shore of Lake Garda.','Perfect given we’ll actually be having a Bardolino evening.','750 ml',5.0,12.0,82,0.1,0.5,0,'Local Specialty','grape',1,1,'Guerrieri Rizzardi, Zenato',750,'Garda'],
+['wine-chiaretto','Bardolino Chiaretto DOC','Guerrieri Rizzardi','wine','Rosé Wine','local','Pale, delicate Garda rosé — one of the region’s specialties.','Absolutely appropriate for a Garda evening — pick this over a generic rosé.','750 ml',6.0,14.0,78,0.1,2,0,'Local Specialty','grape',1,1,'Zeni',750,'Garda'],
+['wine-lugana','Lugana DOC',"Ca' dei Frati",'wine','White Wine','local','Crisp, mineral white from the southern shore of Garda.','One of the two bottles I’d actually put in the cart, rather than six random ones.','750 ml',8.0,18.0,80,0.1,1.5,0,'Local Specialty','grape',1,1,'Zenato',750,'Garda'],
+['wine-custoza','Custoza DOC','Cavalchina','wine','White Wine','local','Another very local Veneto white, softer than Lugana.','A good second white if you want to compare regional styles.','750 ml',5.0,12.0,78,0.1,1.5,0,'','grape',0,0,'',750,'Veneto'],
+['wine-valpsoave','Valpolicella / Soave Classico','Allegrini / Tommasi','wine','Red & White Wine','local','Two nearby Veneto staples — light red and crisp white.','Good everyday options if the DOC Garda wines above sell out.','750 ml',6.0,15.0,80,0.1,1.5,0,'','grape',0,0,'Zenato, Tommasi, Allegrini',750,'Veneto'],
+// -------- JUICE --------
+['juice-zuegg','Skipper Zuegg Apple Juice','Zuegg','drinks','Fruit Juice','','Sweet, simple apple juice — a good kid-friendly option.','Fitting, since we’ll see a lot more Zuegg heading toward South Tyrol.','1 L',1.5,3.0,46,0.3,11,0,'','droplet',0,1,'Yoga, Santàl',1000,'South Tyrol Preview'],
+// -------- SPREADS --------
+['spr-fiordifrutta','Rigoni di Asiago Fiordifrutta','Rigoni di Asiago','snacks','Fruit Spread','local','Organic fruit spread with no added sugar, made in Asiago.','A genuinely excellent Veneto company — the deliberate local pick.','330 g',3.0,5.0,130,0.5,30,0.2,'Local Specialty','cacao',1,1,'',330,'Veneto'],
+['spr-nocciolata','Rigoni di Asiago Nocciolata','Rigoni di Asiago','snacks','Hazelnut Cocoa Spread','local','Rigoni’s organic hazelnut-cocoa spread.','What I’d buy instead of Nutella for this trip.','350 g',3.0,5.0,540,5,52,34,'Daughter Pick','cacao',0,1,'Nutella',350,'Veneto'],
+// -------- PROTEIN BARS --------
+['bar-enervit','Enervit Protein Deal','Enervit','protein','Protein Bar','','Italian sports-nutrition protein bar.','Genuine emergency food — real Italian food should win whenever it’s practical.','40 g',1.5,3.0,380,30,35,10,'Hiking Fuel','meat',0,3,'NamedSport',40,'Italy']
+];
+
+var products = RAW.map(function(row){
+  var o = {};
+  F.forEach(function(key, i){ o[key] = row[i]; });
+  o.priceLow = o.pLow; o.priceHigh = o.pHigh;
+  o.price = Math.round(((o.pLow + o.pHigh) / 2) * 100) / 100;
+  o.extraFilters = o.extra ? o.extra.split(',') : [];
+  o.filters = [o.category].concat(o.extraFilters);
+  o.cooler = o.extraFilters.indexOf('cooler') > -1;
+  o.local = o.extraFilters.indexOf('local') > -1;
+  o.bestForList = o.bestFor ? [o.bestFor] : [];
+  return o;
+});
+var byId = {}; products.forEach(function(p){ byId[p.id] = p; });
+
+/* ===================== STATE ===================== */
+var state = {
+  cart: {}, favorites: {}, activeFilter: 'all', search: '', sort: 'recommended',
+  selectedOnly: false, expanded: {}
+};
+try {
+  var savedCart = localStorage.getItem('garda_cart'); if (savedCart) state.cart = JSON.parse(savedCart);
+  var savedFav = localStorage.getItem('garda_fav'); if (savedFav) state.favorites = JSON.parse(savedFav);
+  var savedTheme = localStorage.getItem('garda_theme'); if (savedTheme) document.documentElement.dataset.theme = savedTheme;
+} catch(e) {}
+
+function persist(){
+  try {
+    localStorage.setItem('garda_cart', JSON.stringify(state.cart));
+    localStorage.setItem('garda_fav', JSON.stringify(state.favorites));
+  } catch(e) {}
+}
+
+/* ===================== FILTER BAR ===================== */
+var FILTERS = [
+  {key:'all', label:'All'}, {key:'protein', label:'Protein'}, {key:'dairy', label:'Dairy'},
+  {key:'local', label:'Local'}, {key:'drinks', label:'Drinks'}, {key:'bread', label:'Bread & Carbs'},
+  {key:'fruitveg', label:'Fruit & Veg'}, {key:'snacks', label:'Snacks'}, {key:'wine', label:'Wine & Beer'},
+  {key:'cooler', label:'Cooler Items'}
+];
+var filterScroll = document.getElementById('filterScroll');
+FILTERS.forEach(function(f){
+  var btn = document.createElement('button');
+  btn.className = 'filter-pill' + (f.key === 'all' ? ' active' : '');
+  btn.textContent = f.label;
+  btn.setAttribute('role','tab');
+  btn.dataset.filter = f.key;
+  btn.addEventListener('click', function(){
+    state.activeFilter = f.key;
+    document.querySelectorAll('.filter-pill').forEach(function(p){ p.classList.toggle('active', p.dataset.filter === f.key); });
+    renderGrid();
+  });
+  filterScroll.appendChild(btn);
+});
+
+/* ===================== CARD RENDERING ===================== */
+function tileMarkup(p){
+  var badges = '';
+  if (p.cooler) badges += '<span class="badge-mini cooler">'+svgUse('i-snowflake')+' Cooler</span>';
+  if (p.local) badges += '<span class="badge-mini local">'+svgUse('i-map')+' Local</span>';
+  var isFav = !!state.favorites[p.id];
+  return (
+    '<div class="tile tile-cat-'+p.category+'">' +
+      '<div class="tile-inner"><svg class="icon"><use href="#i-'+p.icon+'"></use></svg></div>' +
+      '<div class="tile-badges">' +
+        '<div style="display:flex;flex-direction:column;gap:6px;align-items:flex-start;">'+badges+'</div>' +
+        '<button class="fav-btn'+(isFav?' is-fav':'')+'" data-fav="'+p.id+'" aria-label="'+(isFav?'Remove from favorites':'Add to favorites')+'" aria-pressed="'+isFav+'">'+svgUse('i-heart')+'</button>' +
+      '</div>' +
+    '</div>'
+  );
+}
+
+function cardMarkup(p, i){
+  var qty = state.cart[p.id] || 0;
+  var proteinBadge = p.protein >= 8 ? '<span class="protein-badge">'+svgUse('i-dumbbell')+' '+p.protein+'g protein / 100g</span>' : '';
+  var bestFor = p.bestFor ? '<span class="best-for">'+svgUse('i-star')+' '+p.bestFor+'</span>' : '';
+  var altText = p.alt ? '<div><b>Alternatives:</b> '+p.alt+'</div>' : '';
+  return (
+    '<article class="card" style="animation-delay:'+Math.min(i*18,300)+'ms" data-id="'+p.id+'">' +
+      tileMarkup(p) +
+      '<div class="card-body">' +
+        '<div class="card-top">' +
+          '<div><div class="card-name">'+p.name+'</div><div class="card-brand">'+p.brand+' · '+p.region+'</div></div>' +
+          '<div class="card-price">€'+p.priceLow.toFixed(2)+'–'+p.priceHigh.toFixed(2)+'</div>' +
+        '</div>' +
+        '<div class="card-desc">'+p.desc+'</div>' +
+        proteinBadge + bestFor +
+        '<div class="macro-row">' +
+          '<span class="macro-chip">'+p.kcal+' kcal</span>' +
+          '<span class="macro-chip">P '+p.protein+'g</span>' +
+          '<span class="macro-chip">C '+p.carbs+'g</span>' +
+          '<span class="macro-chip">F '+p.fat+'g</span>' +
+        '</div>' +
+        '<button class="expand-toggle" data-expand="'+p.id+'" aria-expanded="false">' +
+          'More detail '+svgUse('i-chevron') +
+        '</button>' +
+        '<div class="card-detail"><div class="card-detail-inner">' +
+          '<div><b>Why buy it:</b> '+p.why+'</div>' +
+          '<div><b>Pack size:</b> '+p.pack+' &nbsp;·&nbsp; <b>Subcategory:</b> '+p.sub+'</div>' +
+          altText +
+        '</div></div>' +
+      '</div>' +
+      '<div class="card-footer">' +
+        '<div class="stepper">' +
+          '<button data-step="-1" data-id="'+p.id+'" aria-label="Decrease quantity">'+svgUse('i-minus')+'</button>' +
+          '<span class="qty" data-qty="'+p.id+'">'+qty+'</span>' +
+          '<button data-step="1" data-id="'+p.id+'" aria-label="Increase quantity">'+svgUse('i-plus')+'</button>' +
+        '</div>' +
+        '<button class="add-btn'+(qty>0?' in-cart':'')+'" data-add="'+p.id+'">' +
+          (qty>0 ? svgUse('i-check')+' In haul' : svgUse('i-plus')+' Add') +
+        '</button>' +
+      '</div>' +
+    '</article>'
+  );
+}
+
+function sortProducts(list){
+  var s = state.sort;
+  var copy = list.slice();
+  if (s === 'protein-desc') copy.sort(function(a,b){ return b.protein - a.protein; });
+  else if (s === 'kcal-asc') copy.sort(function(a,b){ return a.kcal - b.kcal; });
+  else if (s === 'price-asc') copy.sort(function(a,b){ return a.price - b.price; });
+  else if (s === 'local') copy.sort(function(a,b){ return (b.local?1:0) - (a.local?1:0) || b.priority - a.priority; });
+  else copy.sort(function(a,b){ return b.priority - a.priority; });
+  return copy;
+}
+
+function renderGrid(){
+  var grid = document.getElementById('productGrid');
+  var q = state.search.trim().toLowerCase();
+  var list = products.filter(function(p){
+    if (state.activeFilter !== 'all' && p.filters.indexOf(state.activeFilter) === -1) return false;
+    if (state.selectedOnly && !state.cart[p.id]) return false;
+    if (q) {
+      var hay = (p.name+' '+p.brand+' '+p.sub+' '+p.region+' '+p.desc).toLowerCase();
+      if (hay.indexOf(q) === -1) return false;
+    }
+    return true;
+  });
+  list = sortProducts(list);
+  document.getElementById('resultCount').textContent = list.length + ' item' + (list.length===1?'':'s') + ' shown';
+  if (!list.length){
+    grid.innerHTML = '<div class="empty-state" style="grid-column:1/-1;">'+svgUse('i-search')+'<div>No products match. Try another filter or search term.</div></div>';
+    return;
+  }
+  grid.innerHTML = list.map(cardMarkup).join('');
+}
+
+/* ===================== CART LOGIC ===================== */
+function setQty(id, qty){
+  qty = Math.max(0, Math.min(99, qty));
+  if (qty === 0) delete state.cart[id]; else state.cart[id] = qty;
+  persist();
+  refreshAll();
+}
+function changeQty(id, delta){ setQty(id, (state.cart[id]||0) + delta); }
+function addToCart(id){ if (!state.cart[id]) setQty(id, 1); else changeQty(id,1); showToast('Added to haul'); }
+
+function cartEntries(){
+  return Object.keys(state.cart).map(function(id){ return {p: byId[id], qty: state.cart[id]}; }).filter(function(e){ return e.p; });
+}
+
+function computeTotals(){
+  var entries = cartEntries();
+  var t = {units:0, kcal:0, protein:0, carbs:0, fat:0, priceLow:0, priceHigh:0, price:0,
+           coolerWeight:0, drinkWeight:0, weight:0, coolerCount:0, localCount:0, drinkCount:0, proteinItems:0};
+  entries.forEach(function(e){
+    var p = e.p, q = e.qty;
+    t.units += q;
+    var mult = (p.weightG/100) * q;
+    t.kcal += p.kcal * mult;
+    t.protein += p.protein * mult;
+    t.carbs += p.carbs * mult;
+    t.fat += p.fat * mult;
+    t.priceLow += p.priceLow * q; t.priceHigh += p.priceHigh * q; t.price += p.price * q;
+    var w = p.weightG * q;
+    t.weight += w;
+    if (p.cooler){ t.coolerWeight += w; t.coolerCount += q; }
+    if (p.category === 'drinks'){ t.drinkWeight += w; t.drinkCount += q; }
+    if (p.local) t.localCount += q;
+    if (p.protein >= 8) t.proteinItems += q;
+  });
+  return t;
+}
+
+function kg(g){ return (g/1000).toFixed(1) + ' kg'; }
+
+function refreshCartCount(){
+  var count = Object.keys(state.cart).reduce(function(s,id){ return s + state.cart[id]; }, 0);
+  [document.getElementById('cartBadge'), document.getElementById('cartBadgeFab')].forEach(function(el){
+    el.textContent = count; el.hidden = count === 0;
+  });
+}
+
+function groupLabel(p){
+  if (p.category === 'protein') return 'Protein';
+  if (p.category === 'dairy') return 'Dairy';
+  if (p.category === 'drinks') return 'Drinks';
+  if (p.category === 'fruitveg') return 'Produce';
+  if (p.category === 'bread') return 'Bread / Carbs';
+  return 'Fun / Local';
+}
+
+function renderCart(){
+  var entries = cartEntries();
+  var body = document.getElementById('cartBody');
+  if (!entries.length){
+    body.innerHTML = '<div class="cart-empty">'+svgUse('i-cart')+'<div>Your haul is empty.<br>Add items or load a preset below.</div></div>';
+  } else {
+    var groups = {};
+    entries.forEach(function(e){ var g = groupLabel(e.p); (groups[g] = groups[g]||[]).push(e); });
+    var order = ['Protein','Dairy','Drinks','Produce','Bread / Carbs','Fun / Local'];
+    var html = '';
+    order.forEach(function(g){
+      if (!groups[g]) return;
+      html += '<div class="cart-section-title">'+g+'</div>';
+      groups[g].forEach(function(e){
+        var p = e.p;
+        html += (
+          '<div class="cart-line">' +
+            '<div class="cart-line-tile tile-cat-'+p.category+'"><svg class="icon" style="width:18px;height:18px;"><use href="#i-'+p.icon+'"></use></svg></div>' +
+            '<div class="cart-line-info"><div class="cart-line-name">'+p.name+'</div><div class="cart-line-meta">×'+e.qty+' · €'+(p.price*e.qty).toFixed(2)+'</div></div>' +
+            '<div class="stepper" style="border:none;">' +
+              '<button data-step="-1" data-id="'+p.id+'" aria-label="Decrease quantity">'+svgUse('i-minus')+'</button>' +
+              '<span class="qty">'+e.qty+'</span>' +
+              '<button data-step="1" data-id="'+p.id+'" aria-label="Increase quantity">'+svgUse('i-plus')+'</button>' +
+            '</div>' +
+            '<button class="cart-line-remove" data-remove="'+p.id+'" aria-label="Remove '+p.name+'">'+svgUse('i-x')+'</button>' +
+          '</div>'
+        );
+      });
+    });
+    body.innerHTML = html;
+  }
+  var t = computeTotals();
+  document.getElementById('totUnits').textContent = t.units;
+  document.getElementById('totKcal').textContent = Math.round(t.kcal).toLocaleString() + ' kcal';
+  document.getElementById('totProtein').textContent = Math.round(t.protein) + ' g';
+  document.getElementById('totCoolerWeight').textContent = kg(t.coolerWeight);
+  document.getElementById('totDrinkWeight').textContent = kg(t.drinkWeight);
+  document.getElementById('totWeight').textContent = kg(t.weight);
+  document.getElementById('totPrice').textContent = '€'+Math.round(t.price);
+}
+
+/* ===================== DASHBOARD ===================== */
+function setRing(circleId, valueId, value, unitFormatter, max){
+  var circle = document.getElementById(circleId);
+  var r = 50, circumference = 2*Math.PI*r;
+  circle.style.strokeDasharray = circumference;
+  var pct = Math.max(0, Math.min(1, value / max));
+  circle.style.strokeDashoffset = circumference * (1 - pct);
+  document.getElementById(valueId).textContent = unitFormatter(value);
+}
+
+function refreshDashboard(){
+  var t = computeTotals();
+  setRing('ringProtein','ringProteinVal', t.protein, function(v){ return Math.round(v); }, 600);
+  setRing('ringKcal','ringKcalVal', t.kcal, function(v){ return Math.round(v).toLocaleString(); }, 12000);
+  setRing('ringCost','ringCostVal', t.price, function(v){ return '€'+Math.round(v); }, 150);
+  document.getElementById('statProteinItems').textContent = t.proteinItems;
+  document.getElementById('statLocal').textContent = t.localCount;
+  document.getElementById('statCooler').textContent = t.coolerCount;
+  document.getElementById('statDrinks').textContent = t.drinkCount;
+  document.getElementById('statPerPerson').textContent = '€'+Math.round(t.price/3);
+  document.getElementById('statProteinPerEuro').textContent = t.price > 0 ? Math.round(t.protein/t.price) + 'g' : '0g';
+
+  var allCooler = products.filter(function(p){ return p.cooler; });
+  document.getElementById('coolerCountAll').textContent = allCooler.length;
+  document.getElementById('coolerCountCart').textContent = t.coolerCount;
+  document.getElementById('coolerWeight').textContent = kg(t.coolerWeight);
+}
+
+/* ===================== MEALS ===================== */
+var MEALS = [
+  {name:'Bresaola, Rocket & Parmigiano', tag:'High Protein', ids:['meat-bresaola','veg-rucola','chz-parm24','oil-garda','cond-pantry'], kcal:'~430 kcal', protein:'45–55 g protein'},
+  {name:'Fiocchi, Tuna, Datterini & Piadina', tag:'Hotel Meal', ids:['dai-fiocchi-jocca','fish-riomare-naturale','veg-datterini','bread-piadina'], kcal:'~480 kcal', protein:'45–60 g protein'},
+  {name:'Skyr, Oats & Banana', tag:'Breakfast', ids:['dai-fage','brk-oats','frt-banana'], kcal:'~380 kcal', protein:'30–40 g protein'},
+  {name:'Mozzarella, Tomato & Ciabatta', tag:'Vacation Mode', ids:['chz-bufala','veg-datterini','oil-garda','bread-ciabatta'], kcal:'~520 kcal', protein:'~25 g protein'},
+  {name:'Piadina, Turkey & Cheese', tag:'Hotel Meal', ids:['bread-piadina','meat-tacchino-beretta','chz-provolone','cond-pantry'], kcal:'~450 kcal', protein:'35–45 g protein'}
+];
+function renderMeals(){
+  var grid = document.getElementById('mealGrid');
+  grid.innerHTML = MEALS.map(function(m, i){
+    var names = m.ids.map(function(id){ return byId[id] ? byId[id].name : id; }).join(' + ');
+    return (
+      '<div class="meal-card">' +
+        '<span class="meal-tag">'+m.tag+'</span>' +
+        '<div class="meal-name">'+m.name+'</div>' +
+        '<div class="meal-ingredients">'+names+'</div>' +
+        '<div class="meal-macros"><span><b>'+m.kcal+'</b></span><span><b>'+m.protein+'</b></span></div>' +
+        '<button class="btn btn-ghost btn-sm btn-block" data-meal="'+i+'">'+svgUse('i-plus')+' Add meal ingredients to cart</button>' +
+      '</div>'
+    );
+  }).join('');
+}
+
+/* ===================== ROAD TRIP LIST ===================== */
+var ROAD_ITEMS = [
+  {id:'wat-sanben-naturale', note:'Small bottles for the car — always within reach.', rating:5},
+  {id:'frt-mele', note:'Survives heat, no mess, kid-friendly.', rating:5},
+  {id:'frt-banana', note:'Filling and fast, but bruises in a bag.', rating:4},
+  {id:'meat-bresaola', note:'Zero mess, huge protein — the road MVP.', rating:5},
+  {id:'chz-parm24', note:'No refrigeration drama for short stretches.', rating:5},
+  {id:'brk-ricecakes', note:'Light, crumbly, easy one-handed snack.', rating:4},
+  {id:'snk-taralli', note:'Crunchy and totally shelf-stable.', rating:4},
+  {id:'bar-enervit', note:'Emergency-only, but genuinely convenient.', rating:4},
+  {id:'snk-nuts', note:'Great fuel — easy to overeat in the car.', rating:3},
+  {id:'fish-riomare-naturale', note:'Great protein, but needs a fork and a napkin.', rating:3}
+];
+function renderRoadList(){
+  var el = document.getElementById('roadList');
+  el.innerHTML = ROAD_ITEMS.map(function(r){
+    var p = byId[r.id]; if (!p) return '';
+    var stars = '';
+    for (var i=1;i<=5;i++) stars += '<svg class="icon'+(i<=r.rating?'':' dim')+' filled" style="width:14px;height:14px;"><use href="#i-star"></use></svg>';
+    return (
+      '<div class="road-item">' +
+        '<div class="road-icon tile-cat-'+p.category+'"><svg class="icon" style="width:18px;height:18px;"><use href="#i-'+p.icon+'"></use></svg></div>' +
+        '<div class="road-name">'+p.name+'</div>' +
+        '<div class="road-note">'+r.note+'</div>' +
+        '<div class="road-stars" aria-label="Convenience rating '+r.rating+' of 5">'+stars+'</div>' +
+      '</div>'
+    );
+  }).join('');
+}
+
+/* ===================== PRESETS ===================== */
+function loadRecommended(){
+  state.cart = {};
+  products.forEach(function(p){ if (p.recQty > 0) state.cart[p.id] = p.recQty; });
+  persist(); refreshAll(); showToast('Recommended haul loaded');
+}
+function loadHighProtein(){
+  state.cart = {};
+  var picks = products.filter(function(p){ return p.protein >= 8; }).sort(function(a,b){ return b.protein - a.protein; }).slice(0,14);
+  picks.forEach(function(p){ state.cart[p.id] = p.priority ? 2 : 1; });
+  persist(); refreshAll(); showToast('High-protein haul loaded');
+}
+function loadFamilyEssentials(){
+  state.cart = {};
+  var picks = {
+    'wat-sanben-naturale':4, 'bread-ciabatta':1, 'dai-yomo':4, 'chz-bufala':1, 'meat-cotto':1,
+    'frt-banana':1, 'frt-mele':1, 'veg-cetriolo':1, 'bis-mulinobianco':1, 'juice-zuegg':1, 'snk-crackers':1
+  };
+  Object.keys(picks).forEach(function(id){ if (byId[id]) state.cart[id] = picks[id]; });
+  persist(); refreshAll(); showToast('Family essentials loaded');
+}
+function clearCart(){ state.cart = {}; persist(); refreshAll(); showToast('Cart cleared'); }
+
+/* ===================== EXPORT / PRINT / COPY ===================== */
+function buildListText(){
+  var entries = cartEntries();
+  var t = computeTotals();
+  var lines = ['LAKE GARDA HAUL — Shopping List', ''];
+  var groups = {};
+  entries.forEach(function(e){ var g = groupLabel(e.p); (groups[g]=groups[g]||[]).push(e); });
+  Object.keys(groups).forEach(function(g){
+    lines.push(g.toUpperCase());
+    groups[g].forEach(function(e){ lines.push('  x'+e.qty+'  '+e.p.name+' ('+e.p.brand+') — €'+(e.p.price*e.qty).toFixed(2)); });
+    lines.push('');
+  });
+  lines.push('Total units: '+t.units);
+  lines.push('Estimated total: €'+Math.round(t.price));
+  lines.push('Estimated protein: '+Math.round(t.protein)+' g');
+  lines.push('Estimated calories: '+Math.round(t.kcal)+' kcal');
+  lines.push('');
+  lines.push('Approximate supermarket pricing and nutrition — verify package labels in store.');
+  return lines.join('\n');
+}
+function saveJson(){
+  var entries = cartEntries().map(function(e){ return {id:e.p.id, name:e.p.name, brand:e.p.brand, qty:e.qty, price:e.p.price}; });
+  var data = {generated:new Date().toISOString(), items:entries, totals:computeTotals()};
+  var blob = new Blob([JSON.stringify(data,null,2)], {type:'application/json'});
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a'); a.href = url; a.download = 'lake-garda-haul.json';
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  showToast('Saved as JSON');
+}
+function copyList(){
+  var text = buildListText();
+  function done(){ showToast('List copied to clipboard'); }
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(done).catch(function(){ fallbackCopy(text, done); });
+  } else { fallbackCopy(text, done); }
+}
+function fallbackCopy(text, cb){
+  var ta = document.createElement('textarea'); ta.value = text; ta.style.position='fixed'; ta.style.opacity='0';
+  document.body.appendChild(ta); ta.select();
+  try { document.execCommand('copy'); } catch(e) {}
+  document.body.removeChild(ta); cb();
+}
+
+/* ===================== TOAST ===================== */
+var toastTimer;
+function showToast(msg){
+  var toast = document.getElementById('toast');
+  document.getElementById('toastMsg').textContent = msg;
+  toast.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(function(){ toast.classList.remove('show'); }, 2200);
+}
+
+/* ===================== THEME ===================== */
+function applyThemeIcon(){
+  var current = document.documentElement.dataset.theme;
+  var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+  var isDark = current === 'dark' || (!current && prefersDark);
+  document.getElementById('themeIcon').innerHTML = '<use href="#'+(isDark ? 'i-moon' : 'i-sun')+'"></use>';
+}
+document.getElementById('themeToggle').addEventListener('click', function(){
+  var current = document.documentElement.dataset.theme;
+  var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+  var isDark = current === 'dark' || (!current && prefersDark);
+  var next = isDark ? 'light' : 'dark';
+  document.documentElement.dataset.theme = next;
+  try { localStorage.setItem('garda_theme', next); } catch(e) {}
+  applyThemeIcon();
+});
+applyThemeIcon();
+
+/* ===================== EVENTS ===================== */
+document.getElementById('productGrid').addEventListener('click', function(e){
+  var stepBtn = e.target.closest('[data-step]');
+  var addBtn = e.target.closest('[data-add]');
+  var favBtn = e.target.closest('[data-fav]');
+  var expandBtn = e.target.closest('[data-expand]');
+  if (stepBtn){ changeQty(stepBtn.dataset.id, parseInt(stepBtn.dataset.step,10)); return; }
+  if (addBtn){ addToCart(addBtn.dataset.add); return; }
+  if (favBtn){
+    var id = favBtn.dataset.fav;
+    if (state.favorites[id]) delete state.favorites[id]; else state.favorites[id] = true;
+    persist();
+    favBtn.classList.toggle('is-fav');
+    favBtn.setAttribute('aria-pressed', state.favorites[id] ? 'true' : 'false');
+    return;
+  }
+  if (expandBtn){
+    var card = expandBtn.closest('.card');
+    card.classList.toggle('expanded');
+    expandBtn.setAttribute('aria-expanded', card.classList.contains('expanded') ? 'true' : 'false');
+    return;
+  }
+});
+
+document.getElementById('cartBody').addEventListener('click', function(e){
+  var stepBtn = e.target.closest('[data-step]');
+  var removeBtn = e.target.closest('[data-remove]');
+  if (stepBtn){ changeQty(stepBtn.dataset.id, parseInt(stepBtn.dataset.step,10)); return; }
+  if (removeBtn){ setQty(removeBtn.dataset.remove, 0); return; }
+});
+
+document.getElementById('mealGrid').addEventListener('click', function(e){
+  var btn = e.target.closest('[data-meal]');
+  if (!btn) return;
+  var meal = MEALS[parseInt(btn.dataset.meal,10)];
+  meal.ids.forEach(function(id){ if (byId[id]) state.cart[id] = (state.cart[id]||0) + 1; });
+  persist(); refreshAll(); showToast('Meal ingredients added');
+});
+
+var searchInput = document.getElementById('searchInput');
+searchInput.addEventListener('input', function(){
+  state.search = searchInput.value;
+  document.getElementById('searchBox').classList.toggle('has-value', !!searchInput.value);
+  renderGrid();
+});
+document.getElementById('searchClear').addEventListener('click', function(){
+  searchInput.value = ''; state.search = '';
+  document.getElementById('searchBox').classList.remove('has-value');
+  renderGrid(); searchInput.focus();
+});
+document.getElementById('sortSelect').addEventListener('change', function(e){ state.sort = e.target.value; renderGrid(); });
+document.getElementById('selectedOnlyToggle').addEventListener('change', function(e){
+  state.selectedOnly = e.target.checked;
+  document.getElementById('selectedOnlyLabel').classList.toggle('active', state.selectedOnly);
+  renderGrid();
+});
+
+document.getElementById('loadRecommendedBtn').addEventListener('click', loadRecommended);
+document.getElementById('presetRecommended').addEventListener('click', loadRecommended);
+document.getElementById('presetHighProtein').addEventListener('click', loadHighProtein);
+document.getElementById('presetFamily').addEventListener('click', loadFamilyEssentials);
+document.getElementById('clearCartBtn').addEventListener('click', clearCart);
+document.getElementById('printBtn').addEventListener('click', function(){ window.print(); });
+document.getElementById('saveJsonBtn').addEventListener('click', saveJson);
+document.getElementById('copyListBtn').addEventListener('click', copyList);
+
+document.getElementById('scrollToCatalog').addEventListener('click', function(){
+  document.getElementById('catalog-section').scrollIntoView({behavior:'smooth', block:'start'});
+});
+
+/* Cart panel open/close (mobile bottom-sheet style via overlay) */
+var cartPanel = document.getElementById('cartPanel');
+var cartOverlay = document.getElementById('cartOverlay');
+function openCart(){ cartPanel.classList.add('open'); cartOverlay.classList.add('open'); }
+function closeCart(){ cartPanel.classList.remove('open'); cartOverlay.classList.remove('open'); }
+document.getElementById('cartOpenBtn').addEventListener('click', openCart);
+document.getElementById('cartFab').addEventListener('click', openCart);
+document.getElementById('cartCloseBtn').addEventListener('click', closeCart);
+cartOverlay.addEventListener('click', closeCart);
+function isDesktopCart(){ return window.matchMedia('(min-width:1180px)').matches; }
+window.addEventListener('resize', function(){ if (isDesktopCart()) closeCart(); });
+
+/* ===================== INIT ===================== */
+function refreshAll(){
+  renderGrid();
+  renderCart();
+  refreshCartCount();
+  refreshDashboard();
+}
+renderMeals();
+renderRoadList();
+refreshAll();
+
+})();
+</script>
+</body>
+</html>
